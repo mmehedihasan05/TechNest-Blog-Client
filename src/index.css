@@ -11,6 +11,10 @@
 
     --bg-white: #fff;
     --bg-lite: #f9f9fe;
+
+    --banner-btn: #ff4c60;
+    --banner-primary: #fff;
+    --banner-secondary: #f9f9fe;
 }
 #appRoot {
     background-color: var(--bg-lite);
@@ -50,6 +54,9 @@ h6,
     padding: 0.5rem 1rem;
     margin: auto;
 }
+.custom-width-nospace {
+    padding: 0px;
+}
 
 /* Mobile Nav Drowdown */
 .mobileNav {
@@ -63,4 +70,8 @@ h6,
 
 .mobileNav.hide {
     left: -180px;
+}
+
+#bannerTest {
+    background-size: cover;
 }

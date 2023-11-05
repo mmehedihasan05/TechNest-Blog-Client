@@ -1,5 +1,6 @@
 import Ads from "./Home Sections/Ads";
 import Banner from "./Home Sections/Banner";
+import Banner2 from "./Home Sections/Banner2";
 import EditorsPick from "./Home Sections/EditorsPick";
 import NewsLetter from "./Home Sections/NewsLetter";
 import RecentBlogs from "./Home Sections/RecentBlogs";
@@ -10,6 +11,7 @@ const Home = () => {
         <>
             {/* banner full width */}
             <div className="mt-8">
+                {/* <Banner2></Banner2> */}
                 <Banner></Banner>
             </div>
 

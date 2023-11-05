@@ -1,5 +1,4 @@
 .banner_ .swiper {
-    width: 100%;
     height: 80vh;
 }
 
@@ -14,11 +13,17 @@
     align-items: center;
 }
 
-.banner_ .swiper-slide img {
-    display: block;
+.banner_ .swiper-slide .banner-image-container {
+    background-size: cover;
+}
+
+.banner_ .swiper-slide .banner-image-overlay {
+    background-color: #4b4870;
+    opacity: 0.5;
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    position: absolute;
+    top: 0;
 }
 
 .banner_ .swiper {
@@ -27,10 +32,10 @@
 }
 .banner_ .swiper-button-prev,
 .banner_ .swiper-button-next {
-    color: var(--text-highlight);
+    color: var(--banner-btn);
 }
 
-@media only screen and (max-width: 426px) {
+/* @media only screen and (max-width: 426px) {
     .banner_ .swiper {
         height: 50vh;
     }
@@ -45,4 +50,4 @@
     .banner_ .swiper {
         height: 35vh;
     }
-}
+} */
