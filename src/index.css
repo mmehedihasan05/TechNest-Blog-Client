@@ -1,0 +1,66 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+#appRoot {
+    /* --text-primary: #454360; */
+    --text-title: #4b4870;
+    --text-highlight: #ff4c60;
+
+    --bg-white: #fff;
+    --bg-lite: #f9f9fe;
+}
+#appRoot {
+    background-color: var(--bg-lite);
+    min-height: 100vh;
+
+    font-family: "Inter", sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.title {
+    color: var(--text-title);
+}
+
+.text-primary {
+    color: var(--text-primary);
+}
+
+.text-secondary {
+    color: var(--text-secondary);
+}
+
+.text-highlight {
+    color: var(--text-highlight);
+}
+
+.bg-white {
+    background-color: var(--bg-white);
+}
+
+.custom-width {
+    max-width: 1280px;
+    padding: 0.5rem 1rem;
+    margin: auto;
+}
+
+/* Mobile Nav Drowdown */
+.mobileNav {
+    transition: all 0.25s;
+    position: absolute;
+    top: 70px;
+}
+.mobileNav.show {
+    left: 12px;
+}
+
+.mobileNav.hide {
+    left: -180px;
+}
