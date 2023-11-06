@@ -5,8 +5,8 @@
 @tailwind utilities;
 
 #appRoot {
-    /* --text-primary: #454360; */
-    --text-title: #4b4870;
+    --text-primary: #454360;
+    --text-secondary: #596172;
     --text-highlight: #ff4c60;
 
     --bg-white: #fff;
@@ -15,10 +15,14 @@
     --banner-btn: #ff4c60;
     --banner-primary: #fff;
     --banner-secondary: #f9f9fe;
+
+    --btn-primary-bg: #4b4870;
+    --btn-primary-text: #fff;
 }
 #appRoot {
     background-color: var(--bg-lite);
     min-height: 100vh;
+    color: var(--text-secondary);
 
     font-family: "Inter", sans-serif;
 }
@@ -29,10 +33,6 @@ h3,
 h4,
 h5,
 h6,
-.title {
-    color: var(--text-title);
-}
-
 .text-primary {
     color: var(--text-primary);
 }
@@ -74,4 +74,11 @@ h6,
 
 #bannerTest {
     background-size: cover;
+}
+
+/* Flow bite correction */
+[data-testid="flowbite-card-image"] {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
 }

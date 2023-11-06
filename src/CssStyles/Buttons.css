@@ -1,0 +1,114 @@
+/* Button Styling */
+._btn {
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.375rem;
+    outline: none;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    color: var(--text-medium);
+    background-color: transparent;
+
+    border: 1px solid transparent;
+}
+._btn:active {
+    transform: scale(0.92);
+}
+
+._btn-primary {
+    background-color: var(--btn-primary-bg);
+    color: var(--btn-primary-text);
+
+    border: 2px solid var(--btn-primary-bg);
+    outline: 4px solid var(--btn-primary-text);
+}
+
+._btn-primary:hover {
+    border: 2px solid var(--btn-primary-text);
+    outline: 4px solid var(--btn-primary-bg);
+}
+
+._btn-readmore {
+    background-color: var(--btn-primary-bg);
+    color: var(--btn-primary-text);
+}
+
+._btn-readmore {
+    text-align: center;
+    display: inline-block;
+    position: relative;
+    text-decoration: none;
+    color: var(--btn-primary-text);
+    text-transform: capitalize;
+    font-size: 18px;
+    width: 170px;
+    overflow: hidden;
+    transition: all 0.2s linear 0s;
+}
+
+._btn-readmore:before {
+    content: "\2192";
+    font-size: 18px;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    right: 0;
+    top: 0;
+    opacity: 0;
+    height: 100%;
+    width: 40px;
+    transition: all 0.2s linear 0s;
+    margin-left: 10px;
+    font-weight: 800;
+}
+._btn-readmore:hover {
+    text-indent: -20px;
+}
+._btn-readmore:hover:before {
+    opacity: 1;
+    text-indent: 0px;
+}
+
+/* .long h2,
+.long h3 {
+    font-weight: 500;
+    font-size: 22px;
+    margin-top: 10px;
+} */
+
+/*
+._btn {
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.375rem;
+    border: 1px solid transparent;
+    outline: none;
+    cursor: pointer;
+    transition: all 0.1s;
+
+    color: var(--text-medium);
+    background-color: transparent;
+}
+._btn:active {
+    transform: scale(0.98);
+}
+
+._btn:hover,
+._btn-fill,
+._btn-outline:hover {
+    color: var(--text-extra-lite);
+    background-color: var(--bg-deep);
+}
+._btn-fill:hover,
+._btn-outline {
+    color: var(--text-medium);
+    background-color: transparent;
+    border: 1px solid var(--bg-deep);
+}
+
+._btn-no-hover-effect {
+    color: var(--text-extra-lite) !important;
+    background-color: var(--bg-deep) !important;
+    border: 1px solid transparent !important;
+}
+*/

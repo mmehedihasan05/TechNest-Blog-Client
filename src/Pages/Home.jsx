@@ -6,9 +6,14 @@ import NewsLetter from "./Home Sections/NewsLetter";
 import RecentBlogs from "./Home Sections/RecentBlogs";
 import ShowByCategories from "./Home Sections/ShowByCategories";
 
+/*
+useInView
+gestures    Tap
+*/
+
 const Home = () => {
     return (
-        <>
+        <div className="custom-width space-y-12">
             {/* banner full width */}
             <div className="mt-8">
                 {/* <Banner2></Banner2> */}
@@ -16,9 +21,9 @@ const Home = () => {
             </div>
 
             {/* Home Page Contents Full Width */}
-            <div className="mt-8 mb-8">
+            <div className="mt-8 mb-8 grid grid-cols-4 gap-4">
                 {/* Main 2 Blog : 3 Part */}
-                <div>
+                <div className="col-span-3  space-y-20">
                     <div>
                         <RecentBlogs></RecentBlogs>
                     </div>
@@ -28,19 +33,22 @@ const Home = () => {
                 </div>
 
                 {/* Right Side Small : 1 Part */}
-                <div>
+                <div className=" space-y-12">
                     <div>
+                        ShowByCategories
                         <ShowByCategories></ShowByCategories>
                     </div>
                     <div className="mt-8">
+                        Ads
                         <Ads></Ads>
                     </div>
                     <div className="mt-8">
+                        NewsLetter
                         <NewsLetter></NewsLetter>
                     </div>
                 </div>
             </div>
-        </>
+        </div>
     );
 };
 

@@ -34,6 +34,9 @@
 .banner_ .swiper-button-next {
     color: var(--banner-btn);
 }
+.swiper-pagination-bullet-active {
+    background: var(--banner-btn);
+}
 
 /* @media only screen and (max-width: 426px) {
     .banner_ .swiper {
