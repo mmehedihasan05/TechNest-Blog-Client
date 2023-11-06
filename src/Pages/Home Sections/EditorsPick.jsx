@@ -19,7 +19,7 @@ const EditorsPick = () => {
         queryKey: ["editorsPickBlog"],
         queryFn: async () => {
             let result = axiosSecure
-                .get(`/recent-blogs`, { withCredentials: true })
+                .get(`/editors-pick`, { withCredentials: true })
                 .then((data) => data)
                 .catch((error) => error);
             return result;
