@@ -3,7 +3,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import useAxiosSecure from "../hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
-import { useParams } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import moment from "moment";
 import { BsBookmarkCheckFill, BsBookmarkCheck, BsFillPencilFill, BsPencil } from "react-icons/bs";
 import { useContext, useState } from "react";
@@ -11,7 +11,7 @@ import { AuthContext } from "../AuthProvider";
 import { Tooltip } from "flowbite-react";
 import { useEffect } from "react";
 import { OtherContext } from "../Root";
-import { formatLongDescription } from "../Utilities/Functionalities";
+import { categoryFormatter, formatLongDescription } from "../Utilities/Functionalities";
 
 const BlogDetails = () => {
     const { blog_id } = useParams();
@@ -56,11 +56,13 @@ const BlogDetails = () => {
 
     const handleComment = () => {};
 
+    const handleUpdate = () => {};
+
     return (
         <div className="custom-width space-y-6">
             {/* Category and Title */}
             <div>
-                <p className="text-highlight font-medium ">{category}</p>
+                <p className="text-highlight font-medium ">{categoryFormatter(category)}</p>
 
                 <h1 className="text-primary sectionHeading text-5xl font-semibold ">{title}</h1>
             </div>
@@ -95,7 +97,9 @@ const BlogDetails = () => {
                         <div className="  text-[--text-primary] hover:text-[--text-highlight]">
                             <Tooltip content="Update Post">
                                 <button className="_btn">
-                                    <BsPencil className="text-xl"></BsPencil>
+                                    <NavLink to={`/updateBlog/${_id}`}>
+                                        <BsPencil className="text-xl"></BsPencil>
+                                    </NavLink>
                                 </button>
                             </Tooltip>
                         </div>

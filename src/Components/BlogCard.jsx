@@ -8,6 +8,7 @@ import moment from "moment";
 import { useContext } from "react";
 import { OtherContext } from "../Root";
 import { Tooltip } from "flowbite-react";
+import { categoryFormatter } from "../Utilities/Functionalities";
 
 const BlogCard = ({ blogData }) => {
     const axiosSecure = useAxiosSecure();
@@ -19,7 +20,7 @@ const BlogCard = ({ blogData }) => {
         <Card className="" imgSrc={bannerUrl}>
             {/*  */}
             <div className="flex-auto">
-                <p className="text-highlight font-medium ">{category}</p>
+                <p className="text-highlight font-medium ">{categoryFormatter(category)}</p>
                 <h5 className=" text-primary text-2xl font-bold tracking-tight ">{title}</h5>
                 <p className="text-sm opacity-80">{moment(creationTime).format("LLL")}</p>
             </div>
