@@ -30,7 +30,6 @@ const EditorsPick = () => {
 
     if (!isLoading || !isPending) {
         editorsPickBlogsData = data.data;
-        console.log(editorsPickBlogsData);
     }
     return (
         <div className="space-y-8">

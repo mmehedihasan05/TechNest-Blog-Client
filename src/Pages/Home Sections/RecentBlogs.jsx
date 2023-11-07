@@ -16,6 +16,7 @@ const RecentBlogs = () => {
         ),
         description: "Explore the most recent blog posts from our tech enthusiasts.",
     };
+
     const { isPending, isLoading, isError, error, data } = useQuery({
         queryKey: ["recentBlogs"],
         queryFn: async () => {
@@ -31,7 +32,6 @@ const RecentBlogs = () => {
 
     if (!isLoading || !isPending) {
         recentBlogsData = data.data;
-        console.log(recentBlogsData);
     }
 
     function formatDescription(description) {
@@ -70,13 +70,3 @@ const RecentBlogs = () => {
 };
 
 export default RecentBlogs;
-
-/*
-            <div className="long hidden">
-                {newDes.map((elem, idx) => (
-                    <div key={idx}>
-                        {elem.heading ? <h3>{elem.heading}</h3> : <p>{elem.description}</p>}
-                    </div>
-                ))} 
-            </div>
-*/

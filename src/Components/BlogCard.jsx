@@ -11,9 +11,7 @@ const BlogCard = ({ blogData }) => {
 
     const { _id, bannerUrl, title, category, shortDescription, isBookmarked, creationTime } =
         blogData;
-    if (_id === "65489521fa30c3ff3a45a05b") {
-        console.log(moment(creationTime).format("LLL"));
-    }
+
     const addBookmarkMutation = useMutation(async (bookmarkData) => {
         const response = await axiosSecure.patch("/addBookMark", bookmarkData);
         return response.data;
@@ -27,6 +25,7 @@ const BlogCard = ({ blogData }) => {
 
     return (
         <Card className="" imgSrc={bannerUrl}>
+            {/*  */}
             <div className="flex-auto">
                 <p className="text-highlight font-medium ">{category}</p>
                 <h5 className=" text-primary text-2xl font-bold tracking-tight ">{title}</h5>
