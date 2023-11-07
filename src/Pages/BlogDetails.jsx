@@ -16,20 +16,23 @@ import { formatLongDescription } from "../Utilities/Functionalities";
 const BlogDetails = () => {
     const { blog_id } = useParams();
     const axiosSecure = useAxiosSecure();
-    const { currentUser } = useContext(AuthContext);
-    const { bookmarkUpdated, addBookmark, removeBookmark } = useContext(OtherContext);
-
     const [blogData, setBlogData] = useState();
+    const { currentUser } = useContext(AuthContext);
+    const { wishlistUpdated, addWishlist, removeWishlist } = useContext(OtherContext);
 
     useEffect(() => {
-        axiosSecure
-            .get(`/blogDetails/${blog_id}`)
-            .then((data) => {
-                setBlogData(data.data);
-                // setLoading(false);
-            })
-            .catch((error) => console.log(error));
-    }, [bookmarkUpdated]);
+        console.log("currentUser", currentUser);
+        if (currentUser === null || currentUser) {
+            axiosSecure
+                .get(`/blogDetails/${blog_id}?userid=${currentUser?.uid}`)
+                .then((data) => {
+                    console.log(data.data);
+                    setBlogData(data.data);
+                    // setLoading(false);
+                })
+                .catch((error) => console.log(error));
+        }
+    }, [currentUser, wishlistUpdated]);
 
     if (!blogData) {
         return;
@@ -42,7 +45,7 @@ const BlogDetails = () => {
         category,
         shortDescription,
         longDescription,
-        isBookmarked,
+        wishlist,
         creationTime,
         authorInfo: { name: authorName, imageUrl: authorImage, userId: authorUserId },
     } = blogData;
@@ -88,22 +91,26 @@ const BlogDetails = () => {
                 </div>
                 <div className="flex items-center gap-4">
                     {/* Update post */}
-                    <div className="  text-[--text-primary] hover:text-[--text-highlight]">
-                        <Tooltip content="Update Post">
-                            <button className="_btn">
-                                <BsPencil className="text-xl"></BsPencil>
-                            </button>
-                        </Tooltip>
-                    </div>
+                    {authorUserId === currentUser.uid ? (
+                        <div className="  text-[--text-primary] hover:text-[--text-highlight]">
+                            <Tooltip content="Update Post">
+                                <button className="_btn">
+                                    <BsPencil className="text-xl"></BsPencil>
+                                </button>
+                            </Tooltip>
+                        </div>
+                    ) : (
+                        ""
+                    )}
 
                     {/* Bookmark Post */}
                     <div className="text-2xl cursor-pointer   text-[--text-primary] hover:text-[--text-highlight] ">
-                        {isBookmarked ? (
+                        {wishlist ? (
                             <Tooltip content="Remove Bookmark">
                                 <button
                                     className="_btn"
                                     onClick={() => {
-                                        removeBookmark(_id);
+                                        removeWishlist(_id);
                                     }}
                                 >
                                     <BsBookmarkCheckFill />
@@ -114,7 +121,7 @@ const BlogDetails = () => {
                                 <button
                                     className="_btn"
                                     onClick={() => {
-                                        addBookmark(_id);
+                                        addWishlist(_id);
                                     }}
                                 >
                                     <BsBookmarkCheck />

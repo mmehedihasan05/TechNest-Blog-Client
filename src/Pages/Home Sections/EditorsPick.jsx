@@ -1,10 +1,17 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useQuery } from "@tanstack/react-query";
+import { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../../AuthProvider";
 import BlogCard from "../../Components/BlogCard";
 import SectionTitle from "../../Components/SectionTitle";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
+import { OtherContext } from "../../Root";
 
 const EditorsPick = () => {
     const axiosSecure = useAxiosSecure();
+    const { currentUser } = useContext(AuthContext);
+    const { wishlistUpdated } = useContext(OtherContext);
+    const [editorsPickBlogData, setRecentBlogData] = useState([]);
 
     const titleInfo = {
         title: (
@@ -15,28 +22,25 @@ const EditorsPick = () => {
         description: "Explore tech's best, as chosen by our editors.",
     };
 
-    const { isPending, isLoading, isError, error, data } = useQuery({
-        queryKey: ["editorsPickBlog"],
-        queryFn: async () => {
-            let result = axiosSecure
-                .get(`/editors-pick`, { withCredentials: true })
-                .then((data) => data)
-                .catch((error) => error);
-            return result;
-        },
-    });
+    useEffect(() => {
+        console.log("currentUser", currentUser);
+        if (currentUser === null || currentUser) {
+            axiosSecure
+                .get(`/editors-pick?userid=${currentUser?.uid}`)
+                .then((data) => {
+                    setRecentBlogData(data.data);
+                    // setLoading(false);
+                })
+                .catch((error) => console.log(error));
+        }
+    }, [currentUser, wishlistUpdated]);
 
-    let editorsPickBlogsData = [];
-
-    if (!isLoading || !isPending) {
-        editorsPickBlogsData = data.data;
-    }
     return (
         <div className="space-y-8">
             <SectionTitle data={titleInfo}></SectionTitle>
 
             <div className="grid grid-cols-2 gap-6">
-                {editorsPickBlogsData.map((blogData, idx) => (
+                {editorsPickBlogData.map((blogData, idx) => (
                     <BlogCard key={idx} blogData={blogData}></BlogCard>
                 ))}
             </div>

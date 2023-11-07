@@ -1,7 +1,7 @@
 import NavBar from "./Sections/NavBar";
 import { Outlet } from "react-router-dom";
 import Footer from "./Sections/Footer";
-import { Toaster } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import { createContext, useContext } from "react";
 import { useState } from "react";
 import useAxiosSecure from "./hooks/useAxiosSecure";
@@ -13,24 +13,27 @@ const Root = () => {
     const axiosSecure = useAxiosSecure();
     const { currentUser } = useContext(AuthContext);
 
-    const [bookmarkUpdated, setBookmarkUpdated] = useState(true);
+    const [wishlistUpdated, setWishlistUpdated] = useState(true);
 
-    const addBookmark = (blog_id) => {
+    const addWishlist = (blog_id) => {
+        if (!currentUser) {
+            toast.error("Login to bookmark!");
+
+            return;
+        }
+
         axiosSecure
-            .patch("/addBookmark", {
+            .patch("/addWishlist", {
                 time: new Date().toISOString(),
                 blogId: blog_id,
                 userId: currentUser.uid,
             })
             .then((response) => {
-                // if (response.data) {
-
-                // }
                 console.log(response.data);
                 // Reset form after successfull login
 
                 if (response.data.modifiedCount > 0) {
-                    setBookmarkUpdated(!bookmarkUpdated);
+                    setWishlistUpdated(!wishlistUpdated);
                 }
             })
             .catch((error) => {
@@ -38,18 +41,23 @@ const Root = () => {
             });
     };
 
-    const removeBookmark = (blog_id) => {
+    const removeWishlist = (blog_id) => {
+        if (!currentUser) {
+            toast.error("Login to bookmark!");
+
+            return;
+        }
         axiosSecure
-            .patch("/removeBookmark", {
+            .patch("/removeWishlist", {
                 time: new Date().toISOString(),
                 blogId: blog_id,
-                userEmail: currentUser.uid,
+                userId: currentUser.uid,
             })
             .then((response) => {
                 console.log(response.data);
 
                 if (response.data.modifiedCount > 0) {
-                    setBookmarkUpdated(!bookmarkUpdated);
+                    setWishlistUpdated(!wishlistUpdated);
                 }
             })
             .catch((error) => {
@@ -57,7 +65,11 @@ const Root = () => {
             });
     };
 
-    const functionalities = { bookmarkUpdated, addBookmark, removeBookmark };
+    const functionalities = {
+        wishlistUpdated,
+        addWishlist,
+        removeWishlist,
+    };
 
     return (
         <div id="appRoot" className="pt-4 space-y-8">

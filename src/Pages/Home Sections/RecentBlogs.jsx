@@ -1,12 +1,20 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import ReactMarkdown from "react-markdown";
 import SectionTitle from "../../Components/SectionTitle";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import BlogCard from "../../Components/BlogCard";
+import { useContext, useEffect } from "react";
+import { AuthContext } from "../../AuthProvider";
+import { useState } from "react";
+import { OtherContext } from "../../Root";
 
 const RecentBlogs = () => {
     const axiosSecure = useAxiosSecure();
+    const { currentUser } = useContext(AuthContext);
+    const [recentBlogData, setRecentBlogData] = useState([]);
+    const { wishlistUpdated } = useContext(OtherContext);
 
     const titleInfo = {
         title: (
@@ -17,51 +25,29 @@ const RecentBlogs = () => {
         description: "Explore the most recent blog posts from our tech enthusiasts.",
     };
 
-    const { isPending, isLoading, isError, error, data } = useQuery({
-        queryKey: ["recentBlogs"],
-        queryFn: async () => {
-            let result = axiosSecure
-                .get(`/recent-blogs`, { withCredentials: true })
-                .then((data) => data)
-                .catch((error) => error);
-            return result;
-        },
-    });
+    /*
+    currentUser === undefined hole skeleton show korbe
+    */
 
-    let recentBlogsData = [];
-
-    if (!isLoading || !isPending) {
-        recentBlogsData = data.data;
-    }
-
-    function formatDescription(description) {
-        const output = description.split("\n\n");
-
-        let final = [];
-
-        for (let index = 0; index < output.length; index++) {
-            let element = output[index];
-
-            if (element.startsWith("**")) {
-                element = element.replaceAll("**", "");
-
-                final.push({ heading: element });
-            } else {
-                element = element.replaceAll("**", "");
-                final.push({ description: element });
-            }
+    useEffect(() => {
+        console.log("currentUser", currentUser);
+        if (currentUser === null || currentUser) {
+            axiosSecure
+                .get(`/recent-blogs?userid=${currentUser?.uid}`)
+                .then((data) => {
+                    setRecentBlogData(data.data);
+                    // setLoading(false);
+                })
+                .catch((error) => console.log(error));
         }
-        return final;
-    }
-
-    // const newDes = formatDescription(test.longDescription);
+    }, [currentUser, wishlistUpdated]);
 
     return (
         <div className="space-y-8">
             <SectionTitle data={titleInfo}></SectionTitle>
 
             <div className="grid grid-cols-2 gap-6">
-                {recentBlogsData.map((blogData, idx) => (
+                {recentBlogData.map((blogData, idx) => (
                     <BlogCard key={idx} blogData={blogData}></BlogCard>
                 ))}
             </div>

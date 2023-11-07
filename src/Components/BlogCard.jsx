@@ -5,23 +5,15 @@ import { NavLink } from "react-router-dom";
 import useAxiosSecure from "../hooks/useAxiosSecure";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import moment from "moment";
+import { useContext } from "react";
+import { OtherContext } from "../Root";
+import { Tooltip } from "flowbite-react";
 
 const BlogCard = ({ blogData }) => {
     const axiosSecure = useAxiosSecure();
+    const { addWishlist, removeWishlist } = useContext(OtherContext);
 
-    const { _id, bannerUrl, title, category, shortDescription, isBookmarked, creationTime } =
-        blogData;
-
-    const addBookmarkMutation = useMutation(async (bookmarkData) => {
-        const response = await axiosSecure.patch("/addBookMark", bookmarkData);
-        return response.data;
-    });
-
-    const AddBookmark = () => {
-        addBookmarkMutation.mutate({ blogId: _id, userId: "123456" });
-    };
-
-    const RemoveBookmark = () => {};
+    const { _id, bannerUrl, title, category, shortDescription, wishlist, creationTime } = blogData;
 
     return (
         <Card className="" imgSrc={bannerUrl}>
@@ -37,15 +29,30 @@ const BlogCard = ({ blogData }) => {
                 <NavLink to={`/blogDetails/${_id}`}>
                     <button className="_btn _btn-readmore">Read Full Blog</button>
                 </NavLink>
-                <div className="text-2xl cursor-pointer">
-                    {isBookmarked ? (
-                        <button className="_btn" onClick={RemoveBookmark}>
-                            <BsBookmarkCheckFill className="text-[--text-primary]" />
-                        </button>
+                {/* Bookmark Post */}
+                <div className="text-2xl cursor-pointer   text-[--text-primary] hover:text-[--text-highlight] ">
+                    {wishlist ? (
+                        <Tooltip content="Remove Bookmark">
+                            <button
+                                className="_btn"
+                                onClick={() => {
+                                    removeWishlist(_id);
+                                }}
+                            >
+                                <BsBookmarkCheckFill />
+                            </button>
+                        </Tooltip>
                     ) : (
-                        <button className="_btn" onClick={AddBookmark}>
-                            <BsBookmarkCheck className="text-[--text-primary]" />
-                        </button>
+                        <Tooltip content="Bookmark Post">
+                            <button
+                                className="_btn"
+                                onClick={() => {
+                                    addWishlist(_id);
+                                }}
+                            >
+                                <BsBookmarkCheck />
+                            </button>
+                        </Tooltip>
                     )}
                 </div>
             </div>

@@ -175,6 +175,8 @@ const AuthProvider = ({ children }) => {
             setLoading(false);
             setCurrentUser(user);
 
+            console.log(user);
+
             /*
             ekhane jhankar vai direct email na pele state theke newar try korse. But erkm dorkar hoy na, user theke always pawa jacche, and user er info e state e set hocche tar sathe kichukkhn time o jacche.
             const currentUserEmail = user?.email || currentUser?.email

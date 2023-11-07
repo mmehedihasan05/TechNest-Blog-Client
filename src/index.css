@@ -103,7 +103,9 @@ form input._input {
 form input._input:focus,
 form .passwordParent:focus,
 form .passwordParent:focus-within,
-form [name="comment"]:focus {
+form [name="comment"]:focus,
+form textarea:focus,
+form select:focus {
     outline: 1px solid var(--text-primary);
     outline-offset: 0px;
     border-color: var(--text-primary);
