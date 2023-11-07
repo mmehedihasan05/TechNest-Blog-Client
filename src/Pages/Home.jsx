@@ -7,15 +7,14 @@ import RecentBlogs from "./Home Sections/RecentBlogs";
 import ShowByCategories from "./Home Sections/ShowByCategories";
 
 /*
-useInView
-gestures    Tap
+
 */
 
 const Home = () => {
     return (
         <div className="custom-width space-y-12">
             {/* banner full width */}
-            <div className="mt-8">
+            <div className="">
                 {/* <Banner2></Banner2> */}
                 <Banner></Banner>
             </div>

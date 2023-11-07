@@ -1,10 +1,14 @@
 /* eslint-disable react/no-unknown-property */
-import { useState } from "react";
+import { useContext, useState } from "react";
+import toast from "react-hot-toast";
 import { HiOutlineMenuAlt1 } from "react-icons/hi";
 import { RxCross1 } from "react-icons/rx";
 import { NavLink } from "react-router-dom";
+import { AuthContext } from "../AuthProvider";
 
 const NavBar = () => {
+    const { logout, currentUser } = useContext(AuthContext);
+
     const [menuShow, setMenuShow] = useState(false);
 
     const handleMenuShow = () => {
@@ -20,11 +24,25 @@ const NavBar = () => {
         { path: "/wishlist", name: "Wishlist" },
     ];
 
+    const handleLogout = () => {
+        logout()
+            .then((response) => {})
+            .catch((error) => {});
+
+        toast.promise(logout(), {
+            loading: "Logging out...",
+            success: <b>Logged out successfully!</b>,
+            error: <b>Unable to log out</b>,
+        });
+    };
+
     return (
-        <>
+        <div className="custom-width ">
             <div
-                className="bg-white title custom-width shadow-md rounded-sm
-        flex items-center justify-between"
+                className="bg-white title shadow-md rounded-sm
+        flex items-center justify-between
+        py-2 px-2
+"
             >
                 {/* Main Logo */}
                 <div className="flex items-center gap-4">
@@ -98,29 +116,43 @@ const NavBar = () => {
                 {/* Last Items */}
                 <div>
                     {/* Hiden In Mobile Device */}
-                    <div className="hidden md:flex px-1 gap-6 justify-center font-semibold">
-                        <NavLink
-                            className={({ isActive, isPending }) =>
-                                isActive
-                                    ? ` text-[--text-highlight] border-b-2 border-[--text-highlight]`
-                                    : ` hover:text-[--text-highlight]`
-                            }
-                            to="/register"
-                        >
-                            Register
-                        </NavLink>
-                        <NavLink
-                            className={({ isActive, isPending }) =>
-                                isActive
-                                    ? ` text-[--text-highlight] border-b-2 border-[--text-highlight]`
-                                    : ` hover:text-[--text-highlight]`
-                            }
-                            to="/login"
-                        >
-                            Login
-                        </NavLink>
-                    </div>
+                    {currentUser?.email ? (
+                        <div className="flex gap-2 justify-center items-center">
+                            <img
+                                src={currentUser.photoURL || "/no_user.png"}
+                                className="h-[32px] w-[32px] rounded-full"
+                            />
+
+                            <button className="_btn hidden md:block" onClick={handleLogout}>
+                                Logout
+                            </button>
+                        </div>
+                    ) : (
+                        <div className="hidden md:flex px-1 gap-6 justify-center font-semibold">
+                            <NavLink
+                                className={({ isActive, isPending }) =>
+                                    isActive
+                                        ? ` text-[--text-highlight] border-b-2 border-[--text-highlight]`
+                                        : ` hover:text-[--text-highlight]`
+                                }
+                                to="/register"
+                            >
+                                Register
+                            </NavLink>
+                            <NavLink
+                                className={({ isActive, isPending }) =>
+                                    isActive
+                                        ? ` text-[--text-highlight] border-b-2 border-[--text-highlight]`
+                                        : ` hover:text-[--text-highlight]`
+                                }
+                                to="/login"
+                            >
+                                Login
+                            </NavLink>
+                        </div>
+                    )}
                 </div>
+
                 {menuShow ? (
                     <div
                         className="absolute top-0 left-0 
@@ -131,7 +163,7 @@ const NavBar = () => {
                     ""
                 )}
             </div>
-        </>
+        </div>
     );
 };
 

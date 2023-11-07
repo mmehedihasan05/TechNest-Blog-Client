@@ -60,7 +60,7 @@ const Register = () => {
     };
 
     return (
-        <div className="max-w-7xl mx-auto rounded-lg">
+        <div className="custom-width  rounded-lg">
             <div
                 className="loginRegister_Page "
                 style={{
@@ -75,13 +75,13 @@ const Register = () => {
                 <div
                     className="w-[85%] md:w-[90%] mx-auto h-[80vh]
                  grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 
-                 py-8 "
+                 py-8"
                 >
                     <div
                         className=" _sub-content
                     col-span-2 lg:col-span-3 px-6 space-y-4
                     hidden md:flex flex-col justify-center
-                    rounded-l-lg
+                    rounded-l-lg shadow-lg
                     "
                     >
                         <h2 className=" text-3xl lg:text-5xl text-white font-bold">
@@ -98,7 +98,7 @@ const Register = () => {
                     <div
                         className="col-span-2 rounded-lg md:rounded-none md:rounded-r-lg space-y-2
                     flex flex-col items-center justify-evenly py-4 px-4
-                    contactFormParent"
+                    contactFormParent shadow-lg"
                     >
                         <div className="">
                             <SectionTitle
@@ -142,7 +142,6 @@ const Register = () => {
                                         name="password"
                                         className="_input password"
                                         required
-                                        defaultValue="sad##sad55_"
                                     />
                                     <div className="text-2xl cursor-pointer place-self-center passwordEye">
                                         {showPassword ? (
