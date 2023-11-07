@@ -4,7 +4,7 @@ import Footer from "./Sections/Footer";
 
 const Root = () => {
     return (
-        <div id="appRoot" className="pt-4">
+        <div id="appRoot" className="pt-4 space-y-12">
             <NavBar></NavBar>
             <Outlet></Outlet>
             <Footer></Footer>

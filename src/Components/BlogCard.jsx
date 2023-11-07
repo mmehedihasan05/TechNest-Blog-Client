@@ -1,10 +1,26 @@
 import { Card } from "flowbite-react";
 import { BsBookmarkCheckFill, BsBookmarkCheck } from "react-icons/bs";
 import "../CssStyles/Buttons.css";
+import { NavLink } from "react-router-dom";
+import useAxiosSecure from "../hooks/useAxiosSecure";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 const BlogCard = ({ blogData }) => {
-    console.log(blogData);
-    const { _id, bannerUrl, title, category, shortDescription } = blogData;
+    const axiosSecure = useAxiosSecure();
+
+    const { _id, bannerUrl, title, category, shortDescription, isBookmarked } = blogData;
+
+    const addBookmarkMutation = useMutation(async (bookmarkData) => {
+        const response = await axiosSecure.patch("/addBookMark", bookmarkData);
+        return response.data;
+    });
+
+    const AddBookmark = () => {
+        addBookmarkMutation.mutate({ blogId: _id, userId: "123456" });
+    };
+
+    const RemoveBookmark = () => {};
+
     return (
         <Card className="" imgSrc={bannerUrl}>
             <div className="flex-auto">
@@ -14,13 +30,19 @@ const BlogCard = ({ blogData }) => {
 
             <p className="text-secondary font-normal flex-auto">{shortDescription}</p>
             <div className="flex items-center justify-between ">
-                <div>
-                    <button className="_btn _btn-readmore ">Read Full Blog</button>
-                </div>
+                <NavLink to={`/blogDetails/${_id}`}>
+                    <button className="_btn _btn-readmore">Read Full Blog</button>
+                </NavLink>
                 <div className="text-2xl cursor-pointer">
-                    <button className="_btn ">
-                        <BsBookmarkCheck className="text-[--text-primary]" />
-                    </button>
+                    {isBookmarked ? (
+                        <button className="_btn" onClick={RemoveBookmark}>
+                            <BsBookmarkCheckFill className="text-[--text-primary]" />
+                        </button>
+                    ) : (
+                        <button className="_btn" onClick={AddBookmark}>
+                            <BsBookmarkCheck className="text-[--text-primary]" />
+                        </button>
+                    )}
                 </div>
             </div>
         </Card>

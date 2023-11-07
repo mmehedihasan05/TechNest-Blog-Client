@@ -39,7 +39,9 @@ const NavBar = () => {
                         </div>
                     </div>
                     <div>
-                        <img className="w-[180px] " src="/Logo.png" alt="" />
+                        <NavLink to="/">
+                            <img className="w-[180px] " src="/Logo.png" alt="" />
+                        </NavLink>
                     </div>
                 </div>
 

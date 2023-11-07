@@ -28,6 +28,17 @@
     outline: 4px solid var(--btn-primary-bg);
 }
 
+._btn-secondary {
+    background-color: var(--btn-secondary-bg);
+    color: var(--btn-secondary-text);
+    border: 2px solid var(--btn-secondary-bg);
+}
+._btn-secondary:hover {
+    background-color: var(--btn-secondary-text);
+    color: var(--btn-secondary-bg);
+    border: 2px solid var(--btn-secondary-bg);
+}
+
 ._btn-readmore {
     background-color: var(--btn-primary-bg);
     color: var(--btn-primary-text);

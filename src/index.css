@@ -4,6 +4,10 @@
 @tailwind components;
 @tailwind utilities;
 
+/* .focus\:ring-cyan-300:focus {
+    --tw-ring-opacity: 0 !important;
+} */
+
 #appRoot {
     --text-primary: #454360;
     --text-secondary: #596172;
@@ -18,7 +22,11 @@
 
     --btn-primary-bg: #4b4870;
     --btn-primary-text: #fff;
+
+    --btn-secondary-bg: #ff4c60;
+    --btn-secondary-text: #fff;
 }
+
 #appRoot {
     background-color: var(--bg-lite);
     min-height: 100vh;
@@ -81,4 +89,51 @@ h6,
     width: 100%;
     height: 300px;
     object-fit: cover;
+}
+
+/* Login and Register Page Styles */
+/* Input field styling */
+form input._input {
+    color: var(--text-primary);
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: 1px solid var(--text-primary);
+}
+
+form input._input:focus,
+form .passwordParent:focus,
+form .passwordParent:focus-within {
+    outline: 1px solid var(--text-primary);
+    outline-offset: 0px;
+    border-color: var(--text-primary);
+    box-shadow: 0px 0px 2px 1px var(--text-primary);
+}
+
+form .passwordParent {
+    border-radius: 6px;
+    border: 1px solid var(--text-primary);
+}
+
+/* For removeing flowbite default color */
+form input._input[name="password"] {
+    border: none;
+    outline: none;
+    outline-offset: 0px;
+    box-shadow: none;
+}
+form input._input[name="password"]:focus {
+    border: none;
+    outline: none;
+    outline-offset: 0px;
+    box-shadow: none;
+}
+
+form .passwordParent {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-gap: 2px;
+}
+
+form .passwordEye {
+    padding-right: 6px;
 }

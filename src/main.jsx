@@ -16,6 +16,7 @@ import Register from "./Pages/Register";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import AuthProvider from "./AuthProvider";
+import BlogDetails from "./Pages/BlogDetails";
 
 const router = createBrowserRouter([
     {
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
             { path: "/addblog", element: <AddBlog /> },
             { path: "/allblogs", element: <AllBlog /> },
             { path: "/featuredblogs", element: <FeaturedBlogs /> },
+            {
+                path: `/blogDetails/:blog_id`,
+                element: <BlogDetails />,
+            },
             { path: "/wishlist", element: <Wishlist /> },
             { path: "/login", element: <Login /> },
             { path: "/register", element: <Register /> },
