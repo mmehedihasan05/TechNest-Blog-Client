@@ -10,60 +10,29 @@ import { useContext, useState } from "react";
 import { AuthContext } from "../AuthProvider";
 import { Tooltip } from "flowbite-react";
 import { useEffect } from "react";
+import { OtherContext } from "../Root";
+import { formatLongDescription } from "../Utilities/Functionalities";
 
 const BlogDetails = () => {
     const { blog_id } = useParams();
     const axiosSecure = useAxiosSecure();
     const { currentUser } = useContext(AuthContext);
-    const [blogData, setBlogData] = useState({});
-    const [modifiedLongDescription, setmodifiedLongDescription] = useState([]);
+    const { bookmarkUpdated, addBookmark, removeBookmark } = useContext(OtherContext);
 
-    function formatDescription(description) {
-        console.log(description);
+    const [blogData, setBlogData] = useState();
 
-        const output = description.split("\n\n");
+    useEffect(() => {
+        axiosSecure
+            .get(`/blogDetails/${blog_id}`)
+            .then((data) => {
+                setBlogData(data.data);
+                // setLoading(false);
+            })
+            .catch((error) => console.log(error));
+    }, [bookmarkUpdated]);
 
-        let final = [];
-
-        for (let index = 0; index < output.length; index++) {
-            let element = output[index];
-
-            if (element.startsWith("**")) {
-                element = element.replaceAll("**", "");
-
-                final.push({ heading: element });
-            } else {
-                element = element.replaceAll("**", "");
-                final.push({ description: element });
-            }
-        }
-        console.log(final);
-        return final;
-    }
-
-    const { isPending, isLoading, isError, error, data, isSuccess } = useQuery({
-        queryKey: [blog_id],
-        queryFn: async () => {
-            let result = axiosSecure
-                .get(`/blogDetails/${blog_id}`)
-                .then((data) => data)
-                .catch((error) => error);
-
-            return result;
-        },
-    });
-
-    if (isPending || isLoading) {
-        console.log("Data Loading");
-
-        return "Skeleton";
-    }
-
-    let blogDetails_ = {};
-
-    if (isSuccess) {
-        blogDetails_ = data.data;
-        console.log(formatDescription(blogDetails_.longDescription));
+    if (!blogData) {
+        return;
     }
 
     const {
@@ -76,25 +45,24 @@ const BlogDetails = () => {
         isBookmarked,
         creationTime,
         authorInfo: { name: authorName, imageUrl: authorImage, userId: authorUserId },
-    } = blogDetails_;
-
-    console.log(blogDetails_);
+    } = blogData;
 
     let authorTempImage = authorImage
         ? authorImage
         : "https://i.ibb.co/YQnZ4sL/user-profile-9368192.png";
 
-    const handleAddBookMark = () => {};
-
-    const handleRemoveBookmark = () => {};
+    const handleComment = () => {};
 
     return (
         <div className="custom-width space-y-6">
+            {/* Category and Title */}
             <div>
                 <p className="text-highlight font-medium ">{category}</p>
 
                 <h1 className="text-primary sectionHeading text-5xl font-semibold ">{title}</h1>
             </div>
+
+            {/* Banner Image */}
             <div>
                 <img
                     className="rounded-md w-auto h-[60vh] mx-auto object-cover"
@@ -102,7 +70,8 @@ const BlogDetails = () => {
                     alt=""
                 />
             </div>
-            {/* Author Info */}
+
+            {/* Author Info,Time, Update and Bookmark Button */}
             <div className="flex justify-between ">
                 <div className="flex items-center gap-3">
                     <div>
@@ -131,13 +100,23 @@ const BlogDetails = () => {
                     <div className="text-2xl cursor-pointer   text-[--text-primary] hover:text-[--text-highlight] ">
                         {isBookmarked ? (
                             <Tooltip content="Remove Bookmark">
-                                <button className="_btn" onClick={handleRemoveBookmark}>
+                                <button
+                                    className="_btn"
+                                    onClick={() => {
+                                        removeBookmark(_id);
+                                    }}
+                                >
                                     <BsBookmarkCheckFill />
                                 </button>
                             </Tooltip>
                         ) : (
                             <Tooltip content="Bookmark Post">
-                                <button className="_btn" onClick={handleAddBookMark}>
+                                <button
+                                    className="_btn"
+                                    onClick={() => {
+                                        addBookmark(_id);
+                                    }}
+                                >
                                     <BsBookmarkCheck />
                                 </button>
                             </Tooltip>
@@ -146,8 +125,10 @@ const BlogDetails = () => {
                 </div>
             </div>
             <hr />
+
+            {/* Long Description */}
             <div>
-                {formatDescription(blogDetails_.longDescription).map((elem, idx) => (
+                {formatLongDescription(blogData.longDescription).map((elem, idx) => (
                     <div key={idx}>
                         {elem.heading ? (
                             <h3 className="font-semibold text-xl">
@@ -160,17 +141,39 @@ const BlogDetails = () => {
                     </div>
                 ))}
             </div>
+
+            <hr />
+            {/* Comment */}
+            <div className="space-y-4">
+                <div>
+                    <h2 className="text-3xl font-bold">Comments</h2>
+                </div>
+                <hr />
+                <div>
+                    {/* Comment or Warning to login */}
+                    <div className="flex items-center gap-4 w-full">
+                        <img
+                            src={currentUser?.photoURL || "/no_face.png"}
+                            className="h-[45px] w-[45px] rounded-full"
+                        />
+                        <form
+                            action=""
+                            onClick={handleComment}
+                            className="flex items-center gap-4 w-[75%]"
+                        >
+                            <textarea
+                                name="comment"
+                                className="w-full rounded-md"
+                                placeholder="Leave a comment"
+                                required
+                            ></textarea>
+                            <input type="submit" className="_btn _btn-secondary" value="Post" />
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 };
 
 export default BlogDetails;
-/*
-            <div className="long hidden">
-                {newDes.map((elem, idx) => (
-                    <div key={idx}>
-                        {elem.heading ? <h3>{elem.heading}</h3> : <p>{elem.description}</p>}
-                    </div>
-                ))} 
-            </div>
-*/

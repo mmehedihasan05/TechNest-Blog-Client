@@ -123,7 +123,10 @@ const NavBar = () => {
                                 className="h-[32px] w-[32px] rounded-full"
                             />
 
-                            <button className="_btn hidden md:block" onClick={handleLogout}>
+                            <button
+                                className="_btn hidden md:block font-semibold hover:text-[--text-highlight]"
+                                onClick={handleLogout}
+                            >
                                 Logout
                             </button>
                         </div>
