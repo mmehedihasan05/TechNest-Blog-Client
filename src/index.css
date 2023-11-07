@@ -137,3 +137,13 @@ form .passwordParent {
 form .passwordEye {
     padding-right: 6px;
 }
+.loginRegister_Page ._overlay {
+    background-color: var(--text-primary);
+}
+.loginRegister_Page ._sub-content {
+    background: rgb(75 72 112 / 70%);
+}
+.loginRegister_Page .contactFormParent,
+.loginRegister_Page .authentication-toggle {
+    background-color: white;
+}
