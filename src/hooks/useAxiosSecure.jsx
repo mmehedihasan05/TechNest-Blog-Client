@@ -3,6 +3,8 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { useContext, useEffect } from "react";
 
+// baseURL: "https://a11-technest-backend.vercel.app",
+
 let axiosSecure = axios.create({
     baseURL: "http://localhost:5000",
     withCredentials: true,
