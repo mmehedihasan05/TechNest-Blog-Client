@@ -162,3 +162,22 @@ form .passwordEye {
 .loginRegister_Page .authentication-toggle {
     background-color: white;
 }
+
+/* data table fix */
+#cell-1-undefined,
+.rdt_TableHeadRow .rdt_TableCol:first-child {
+    flex-grow: 0;
+}
+#cell-2-undefined,
+.rdt_TableHeadRow .rdt_TableCol:nth-child(2) {
+    flex-grow: 3;
+}
+
+#cell-3-undefined,
+.rdt_TableHeadRow .rdt_TableCol:nth-child(3) {
+    flex-grow: 1;
+}
+#cell-4-undefined,
+.rdt_TableHeadRow .rdt_TableCol:nth-child(4) {
+    flex-grow: 1;
+}

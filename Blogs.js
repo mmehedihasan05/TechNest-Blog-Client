@@ -784,9 +784,9 @@ let fomatt = "2023-11-02T03:43:18.014Z";
 
 const formattedDateTime = moment(fomatt).format("LLLL");
 
-console.log(formattedDateTime);
+// console.log(formattedDateTime);
 
-console.log(allBlogs.length);
+// console.log(allBlogs.length);
 let allTimes = [
     "2023-10-20T08:12:34.567Z",
     "2023-10-21T14:25:10.123Z",
@@ -807,6 +807,21 @@ let allTimes = [
     "2023-11-05T09:56:30.543Z",
     "2023-11-05T14:28:51.765Z",
 ];
-allTimes.forEach((element) => {
-    console.log(moment(element).format("LLLL"));
+
+let sortedAllBlogs = allBlogs.sort((b, a) => {
+    if (a.longDescription.length < b.longDescription.length) {
+        return -1;
+    }
+    if (a.longDescription.length > b.longDescription.length) {
+        return 1;
+    }
+    return 0;
 });
+
+let count = [];
+allBlogs.forEach((blog) => count.push(blog.longDescription.length));
+
+let sortedCount = [];
+sortedAllBlogs.forEach((blog) => sortedCount.push(blog.longDescription.length));
+
+console.log(count, sortedCount);
