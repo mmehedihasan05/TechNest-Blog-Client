@@ -12,6 +12,8 @@ import { Tooltip } from "flowbite-react";
 import { useEffect } from "react";
 import { OtherContext } from "../Root";
 import { categoryFormatter, formatLongDescription } from "../Utilities/Functionalities";
+import { PhotoProvider, PhotoView } from "react-photo-view";
+import "react-photo-view/dist/react-photo-view.css";
 
 const BlogDetails = () => {
     const { blog_id } = useParams();
@@ -70,11 +72,15 @@ const BlogDetails = () => {
 
             {/* Banner Image */}
             <div>
-                <img
-                    className="rounded-md w-auto h-[60vh] mx-auto object-cover"
-                    src={bannerUrl}
-                    alt=""
-                />
+                <PhotoProvider className="">
+                    <PhotoView src={bannerUrl}>
+                        <img
+                            className="rounded-md w-auto h-[60vh] mx-auto object-cover cursor-pointer"
+                            src={bannerUrl}
+                            alt=""
+                        />
+                    </PhotoView>
+                </PhotoProvider>
             </div>
 
             {/* Author Info,Time, Update and Bookmark Button */}
