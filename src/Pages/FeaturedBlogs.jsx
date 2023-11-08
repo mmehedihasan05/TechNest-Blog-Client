@@ -58,7 +58,7 @@ const FeaturedBlogs = () => {
         },
     ];
 
-    console.log(featuredBlogData);
+    // console.log(featuredBlogData);
 
     return (
         <div className="custom-width space-y-8">

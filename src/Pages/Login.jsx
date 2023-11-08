@@ -87,7 +87,6 @@ const Login = () => {
                                     name="email"
                                     className="_input"
                                     required
-                                    defaultValue="sad3@gmail.com"
                                 />
 
                                 <div className="passwordParent">
@@ -97,7 +96,6 @@ const Login = () => {
                                         name="password"
                                         className="_input password"
                                         required
-                                        defaultValue="sad##sad55_"
                                     />
                                     <div className="text-2xl cursor-pointer place-self-center passwordEye">
                                         {showPassword ? (

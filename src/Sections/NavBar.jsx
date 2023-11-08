@@ -14,7 +14,7 @@ const NavBar = () => {
     const [menuShow, setMenuShow] = useState(false);
 
     const handleMenuShow = () => {
-        console.log("clicked");
+        // console.log("clicked");
         setMenuShow(!menuShow);
     };
 

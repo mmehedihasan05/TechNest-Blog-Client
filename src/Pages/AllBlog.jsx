@@ -24,7 +24,7 @@ const AllBlog = () => {
         axiosSecure
             .get(`/allblogs?userid=${userId}`)
             .then((data) => {
-                console.log(data.data);
+                // console.log(data.data);
                 setBlogData(data.data);
                 setSearchStage(false);
                 setLoading(false);
@@ -50,7 +50,7 @@ const AllBlog = () => {
                 `/filterblogs?userid=${userId}&searchTitle=${searchData.searchTitle}&category=${searchData.category}`
             )
             .then((data) => {
-                console.log(data.data);
+                // console.log(data.data);
                 setBlogData(data.data);
                 setSearchStage(true);
                 setLoading(false);
@@ -82,7 +82,7 @@ const AllBlog = () => {
                             <select
                                 name="category"
                                 id=""
-                                className="cursor-pointer border-none  bg-inherit"
+                                className="cursor-pointer border-none  bg-inherit  text-sm md:text-base"
                                 value={categoryInputVal}
                                 onChange={handleCategoryChange}
                             >

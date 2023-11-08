@@ -6,6 +6,7 @@ import { AuthContext } from "../AuthProvider";
 import Authentication_3rdParty from "../Components/Authentication_3rdParty";
 import SectionTitle from "../Components/SectionTitle";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
+import toast from "react-hot-toast";
 
 const Register = () => {
     const [showPassword, setShowPassword] = useState(false);
@@ -33,30 +34,37 @@ const Register = () => {
             userPassword: e.target.password?.value,
         };
 
-        function passwordValidation() {
-            // Validation
-            const uppercaseRegex = /^(?=.*[A-Z]).+$/;
-            var specialCharRegex = /[!@#$%^&*()_+\-=\[\]{};'`:"\\|,.<>\/?~]+/;
+        // Validation
+        const uppercaseRegex = /^(?=.*[A-Z]).+$/;
+        var specialCharRegex = /[!@#$%^&*()_+\-=\[\]{};'`:"\\|,.<>\/?~]+/;
+        const numericCharRegex = /^(?=.*\d).+$/;
 
-            if (data.userPassword.length < 6) {
-                setError("Password should be equal or more than 6 characters");
-                return "";
-            } else if (!uppercaseRegex.test(data.userPassword)) {
-                setError("Password must contain an uppercase character");
-                return;
-            } else if (!specialCharRegex.test(data.userPassword)) {
-                setError("Password must contain a special character");
-                return;
-            }
+        if (data.userPassword.length < 6) {
+            toast.error("Password should be equal or more than 6 characters");
+            setError("Password should be equal or more than 6 characters");
+            return "";
+        } else if (!uppercaseRegex.test(data.userPassword)) {
+            toast.error("Password must contain an uppercase character");
+
+            setError("Password must contain an uppercase character");
+            return;
+        } else if (!specialCharRegex.test(data.userPassword)) {
+            toast.error("Password must contain a special character");
+
+            setError("Password must contain a special character");
+            return;
+        } else if (!numericCharRegex.test(data.userPassword)) {
+            toast.error("Password must contain a numeric character");
+
+            setError("Password must contain a numeric character");
+        } else {
+            userCreate(data)
+                .then((response) => {
+                    // Reset form after successfull login
+                    e.target.reset();
+                })
+                .catch((error) => {});
         }
-        // passwordValidation();
-
-        userCreate(data)
-            .then((response) => {
-                // Reset form after successfull login
-                e.target.reset();
-            })
-            .catch((error) => {});
     };
 
     return (
@@ -169,7 +177,7 @@ const Register = () => {
 
                     {/* For mobile */}
                     <div
-                        className=" block w-full col-span-2 my-8 
+                        className=" block md:hidden w-full col-span-2 my-8 
                     rounded-lg px-2 py-4 authentication-toggle"
                     >
                         <h2 className="text-lg  _text-deep font-bold pb-2">

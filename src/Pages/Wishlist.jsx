@@ -26,7 +26,7 @@ const Wishlist = () => {
             .catch((error) => console.log(error));
     }, [currentUser, wishlistUpdated]);
 
-    console.log(wishlistBlogData);
+    // console.log(wishlistBlogData);
 
     return (
         <div className="space-y-8 custom-width">

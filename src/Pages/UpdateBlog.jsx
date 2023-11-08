@@ -23,7 +23,7 @@ const UpdateBlog = () => {
         axiosSecure
             .get(`/blogDetails/${blog_id}?userid=${userId}`)
             .then((data) => {
-                console.log(data.data);
+                // console.log(data.data);
                 setBlogData(data.data);
                 setCategoryInputVal(data.data?.category);
                 setLoading(false);
@@ -56,7 +56,7 @@ const UpdateBlog = () => {
             axiosSecure
                 .put(`/updateBlog/${blog_id}?userid=${currentUser?.uid}`, blogData)
                 .then((response) => {
-                    console.log(response.data);
+                    // console.log(response.data);
                     if (response.data.acknowledged) {
                         navigate(`/blogDetails/${blog_id}`);
 
@@ -81,7 +81,7 @@ const UpdateBlog = () => {
     };
 
     const { bannerUrl, title, category, shortDescription, longDescription } = blogData;
-    console.log(category);
+    // console.log(category);
 
     return (
         <div className="custom-width sapce-y-10">
@@ -97,7 +97,7 @@ const UpdateBlog = () => {
                     <form
                         action=""
                         onSubmit={handleUpdateBlog}
-                        className="space-y-6 w-[75%] mx-auto"
+                        className="space-y-6 w-[95%] md:w-[75%] mx-auto"
                     >
                         <div className="">
                             <div>Banner Image Url</div>

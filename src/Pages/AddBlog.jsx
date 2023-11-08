@@ -47,13 +47,13 @@ const AddBlog = () => {
                 userId: currentUser.uid,
             },
         };
-        console.log(blogData);
+        // console.log(blogData);
 
         return toast.promise(
             axiosSecure
                 .post("/addBlog", blogData)
                 .then((response) => {
-                    console.log(response.data);
+                    // console.log(response.data);
                     if (response.data.acknowledged) {
                         form.reset();
                         return <b>Blog Published Successfully.</b>;
@@ -76,7 +76,11 @@ const AddBlog = () => {
         <div className="custom-width sapce-y-10">
             <SectionTitle data={{ title: "Add Blog", noBorder: true }}></SectionTitle>
             <div>
-                <form action="" onSubmit={handleAddBlog} className="space-y-6 w-[75%] mx-auto">
+                <form
+                    action=""
+                    onSubmit={handleAddBlog}
+                    className="space-y-6  w-[95%] md:w-[75%] mx-auto"
+                >
                     <div className="">
                         <div>Banner Image Url</div>
                         <input

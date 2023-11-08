@@ -824,4 +824,4 @@ allBlogs.forEach((blog) => count.push(blog.longDescription.length));
 let sortedCount = [];
 sortedAllBlogs.forEach((blog) => sortedCount.push(blog.longDescription.length));
 
-console.log(count, sortedCount);
+// console.log(count, sortedCount);

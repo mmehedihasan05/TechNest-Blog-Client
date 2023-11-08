@@ -134,27 +134,29 @@ const AuthProvider = ({ children }) => {
     };
 
     const logout = async () => {
-        return signOut(auth)
-            .then(() => {
-                axiosSecure
-                    .post(`/logout`, { email: currentUser?.email }, { withCredentials: true })
-                    .then((response) => {
-                        localStorage.removeItem("userId");
-                        localStorage.removeItem("userEmail");
-                        console.log("JWT || Logged Out Successfully ", response);
-                    })
-                    .catch((jwt_Error) => {
-                        console.log(
-                            "JWT || Log Out Failed",
-                            jwt_Error.response.data,
-                            jwt_Error.response.status
-                        );
-                    });
-                // Sign-out successful.
-            })
-            .catch((error) => {
-                // An error happened.
-            });
+        return signOut(auth);
+
+        // return signOut(auth)
+        //     .then(() => {
+        //         axiosSecure
+        //             .post(`/logout`, { email: currentUser?.email }, { withCredentials: true })
+        //             .then((response) => {
+        //                 localStorage.removeItem("userId");
+        //                 localStorage.removeItem("userEmail");
+        //                 console.log("JWT || Logged Out Successfully ", response);
+        //             })
+        //             .catch((jwt_Error) => {
+        //                 console.log(
+        //                     "JWT || Log Out Failed",
+        //                     jwt_Error.response.data,
+        //                     jwt_Error.response.status
+        //                 );
+        //             });
+        //         // Sign-out successful.
+        //     })
+        //     .catch((error) => {
+        //         // An error happened.
+        //     });
     };
 
     const authentications = {

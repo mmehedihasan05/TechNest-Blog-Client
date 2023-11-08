@@ -31,14 +31,14 @@ const BlogDetails = () => {
 
     // Blog data fetching
     useEffect(() => {
-        console.log("currentUser", currentUser);
+        // console.log("currentUser", currentUser);
 
         const userId = localStorage.getItem("userId");
 
         axiosSecure
             .get(`/blogDetails/${blog_id}?userid=${userId}`)
             .then((data) => {
-                console.log(data.data);
+                // console.log(data.data);
                 setBlogData(data.data);
                 // setLoading(false);
             })
@@ -50,7 +50,7 @@ const BlogDetails = () => {
         axiosSecure
             .get(`/comment-list/${blog_id}`)
             .then((data) => {
-                console.log("comment data", data.data);
+                // console.log("comment data", data.data);
                 // data empty hoite pare
 
                 if (data.data.commentInfo) {
@@ -95,7 +95,7 @@ const BlogDetails = () => {
         e.preventDefault();
 
         let form = e.target;
-        console.log(form.comment.value);
+        // console.log(form.comment.value);
 
         let commentData = {
             blog_id: blog_id,
@@ -155,7 +155,7 @@ const BlogDetails = () => {
             </div>
 
             {/* Author Info,Time, Update and Bookmark Button */}
-            <div className="flex justify-between ">
+            <div className="flex justify-between flex-row  ">
                 <div className="flex items-center gap-3">
                     <div>
                         <img
@@ -164,12 +164,12 @@ const BlogDetails = () => {
                             alt=""
                         />
                     </div>
-                    <div className="flex gap-4 items-center">
+                    <div className="flex md:gap-4 items-start md:items-center flex-col md:flex-row">
                         <p className="text-lg">{authorName}</p>
                         <p className="text-sm opacity-70">{moment(creationTime).format("LLL")}</p>
                     </div>
                 </div>
-                <div className="flex items-center gap-4">
+                <div className="flex justify-end items-center gap-4">
                     {/* Update post */}
                     {authorUserId === currentUser?.uid ? (
                         <div className="  text-[--text-primary] hover:text-[--text-highlight]">
@@ -235,13 +235,15 @@ const BlogDetails = () => {
             {/* Comment */}
             <div className="space-y-4">
                 <div>
-                    <h2 className="text-2xl md:text-3xl font-bold">Comments</h2>
+                    <h2 className="text-xl md:text-3xl font-bold">Comments</h2>
                 </div>
                 <hr />
                 <div>
                     {/* Comment or Warning to login */}
                     {!currentUser ? (
-                        <h3 className="text-2xl font-semibold">Please login to comment!</h3>
+                        <h3 className="text-xl md:text-2xl font-semibold text-[--text-highlight]">
+                            Please login to comment!
+                        </h3>
                     ) : authorUserId === currentUser?.uid ? (
                         <h3 className="text-2xl font-semibold">Author cannot comment own post!</h3>
                     ) : (
