@@ -71,6 +71,7 @@ const BlogDetails = () => {
             </div>
 
             {/* Banner Image */}
+            {/* Photo view */}
             <div>
                 <PhotoProvider className="">
                     <PhotoView src={bannerUrl}>
