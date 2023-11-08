@@ -41,34 +41,29 @@ const FeaturedBlogs = () => {
         {
             name: "Blog Owner Image",
             selector: (row) => (
-                <img
-                    src={row?.authorInfo?.imageUrl}
-                    alt="Blog Owner Image"
-                    style={{ width: "120px", height: "120px" }}
-                />
+                <div className="flex justify-center items-center w-full mx-auto" style={{}}>
+                    <img
+                        src={row?.authorInfo?.imageUrl}
+                        alt="Blog Owner Image"
+                        style={{
+                            width: "auto",
+                            height: "120px",
+                            borderRadius: "50%",
+                            padding: "10px 0px",
+                        }}
+                    />
+                </div>
             ),
         },
     ];
-
-    const myNewTheme = {
-        rows: {
-            fontSize: "25px",
-        },
-        selector: {
-            fontSize: "25px",
-        },
-        columns: {
-            fontSize: "25px",
-        },
-    };
 
     console.log(featuredBlogData);
 
     return (
         <div className="custom-width space-y-8">
             <SectionTitle data={{ title: "Featured Blogs", noBorder: true }}></SectionTitle>
-            <div className="">
-                <DataTable columns={columns} data={featuredBlogData} customTheme={myNewTheme} />
+            <div className="react_data_table">
+                <DataTable columns={columns} data={featuredBlogData} className="text-xl" />
             </div>
         </div>
     );

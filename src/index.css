@@ -181,3 +181,18 @@ form .passwordEye {
 .rdt_TableHeadRow .rdt_TableCol:nth-child(4) {
     flex-grow: 1;
 }
+.rdt_TableHeadRow,
+.rdt_TableRow {
+    font-size: 18px !important;
+}
+#cell-2-undefined div {
+    white-space: wrap;
+}
+.react_data_table div {
+    white-space: normal !important;
+}
+@media only screen and (max-width: 426px) {
+    .react_data_table div {
+        white-space: nowrap !important;
+    }
+}
