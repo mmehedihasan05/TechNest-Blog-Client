@@ -3,7 +3,8 @@ import { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import SectionTitle from "../Components/SectionTitle";
 import useAxiosSecure from "../hooks/useAxiosSecure";
-
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 const FeaturedBlogs = () => {
     const axiosSecure = useAxiosSecure();
     const [featuredBlogData, setFeaturedBlogData] = useState([]);
@@ -62,9 +63,16 @@ const FeaturedBlogs = () => {
     return (
         <div className="custom-width space-y-8">
             <SectionTitle data={{ title: "Featured Blogs", noBorder: true }}></SectionTitle>
-            <div className="react_data_table">
-                <DataTable columns={columns} data={featuredBlogData} className="text-xl" />
-            </div>
+
+            {featuredBlogData.length === 0 ? (
+                <div>
+                    <Skeleton height={30} count={12} />
+                </div>
+            ) : (
+                <div className="react_data_table">
+                    <DataTable columns={columns} data={featuredBlogData} className="text-xl" />
+                </div>
+            )}
         </div>
     );
 };

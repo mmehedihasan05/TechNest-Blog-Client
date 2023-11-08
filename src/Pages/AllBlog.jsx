@@ -7,6 +7,7 @@ import SectionTitle from "../Components/SectionTitle";
 import useAxiosSecure from "../hooks/useAxiosSecure";
 import { OtherContext } from "../Root";
 import "../CssStyles/Buttons.css";
+import SkeletorForCard from "../Components/SkeletorForCard";
 const AllBlog = () => {
     const [blogData, setBlogData] = useState([]);
     const { currentUser } = useContext(AuthContext);
@@ -14,6 +15,8 @@ const AllBlog = () => {
     const axiosSecure = useAxiosSecure();
     const [categoryInputVal, setCategoryInputVal] = useState("all");
     const [searchStage, setSearchStage] = useState(false);
+
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const userId = localStorage.getItem("userId");
@@ -24,13 +27,15 @@ const AllBlog = () => {
                 console.log(data.data);
                 setBlogData(data.data);
                 setSearchStage(false);
-                // setLoading(false);
+                setLoading(false);
             })
             .catch((error) => console.log(error));
     }, [currentUser, wishlistUpdated]);
 
     const handleSearch = (e) => {
         e.preventDefault();
+        setLoading(true);
+
         const form = e.target;
 
         const searchData = {
@@ -48,7 +53,7 @@ const AllBlog = () => {
                 console.log(data.data);
                 setBlogData(data.data);
                 setSearchStage(true);
-                // setLoading(false);
+                setLoading(false);
             })
             .catch((error) => console.log(error));
     };
@@ -115,6 +120,20 @@ const AllBlog = () => {
                         ""
                     )}
                 </div>
+
+                {loading ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <SkeletorForCard></SkeletorForCard>
+                        <SkeletorForCard></SkeletorForCard>
+                        <SkeletorForCard></SkeletorForCard>
+                        <SkeletorForCard></SkeletorForCard>
+                        <SkeletorForCard></SkeletorForCard>
+                        <SkeletorForCard></SkeletorForCard>
+                    </div>
+                ) : (
+                    ""
+                )}
+
                 {/* All blogs */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {blogData.map((blogData, idx) => (

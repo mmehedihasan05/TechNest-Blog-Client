@@ -6,6 +6,8 @@ import { AuthContext } from "../AuthProvider";
 import SectionTitle from "../Components/SectionTitle";
 import useAxiosSecure from "../hooks/useAxiosSecure";
 import { categoryFormatter } from "../Utilities/Functionalities";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 const UpdateBlog = () => {
     const { blog_id } = useParams();
@@ -13,6 +15,7 @@ const UpdateBlog = () => {
     const [blogData, setBlogData] = useState({});
     const navigate = useNavigate();
     const [categoryInputVal, setCategoryInputVal] = useState("");
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const userId = localStorage.getItem("userId");
@@ -23,7 +26,7 @@ const UpdateBlog = () => {
                 console.log(data.data);
                 setBlogData(data.data);
                 setCategoryInputVal(data.data?.category);
-                // setLoading(false);
+                setLoading(false);
             })
             .catch((error) => console.log(error));
     }, []);
@@ -83,80 +86,94 @@ const UpdateBlog = () => {
     return (
         <div className="custom-width sapce-y-10">
             <SectionTitle data={{ title: "Update Blog", noBorder: true }}></SectionTitle>
-            <div>
-                <form action="" onSubmit={handleUpdateBlog} className="space-y-6 w-[75%] mx-auto">
-                    <div className="">
-                        <div>Banner Image Url</div>
-                        <input
-                            type="text"
-                            placeholder="Banner Image URL"
-                            name="banner_image_url"
-                            className="_input w-full"
-                            required
-                            defaultValue={bannerUrl}
-                        />
-                    </div>
-                    <div>
-                        <div>Blog Title</div>
-                        <input
-                            type="text"
-                            placeholder="Title"
-                            name="blog_title"
-                            className="_input w-full"
-                            required
-                            defaultValue={title}
-                        />
-                    </div>
-                    <div>
-                        <div>Category</div>
-                        <select
-                            name="category"
-                            id=""
-                            className="w-full cursor-pointer"
-                            required
-                            value={categoryInputVal}
-                            onChange={handleCategoryChange}
-                        >
-                            <option value="artificial_intelligence">Artificial Intelligence</option>
-                            <option value="web_development">Web Development</option>
-                            <option value="data_science">Data Science</option>
-                            <option value="cybersecurity">Cybersecurity</option>
-                            <option value="robotics">Robotics</option>
-                        </select>
-                    </div>
-                    <div>
-                        <div>Short Description</div>
-                        <textarea
-                            name="shortDescription"
-                            className="w-full rounded-md"
-                            id=""
-                            placeholder="Short Description"
-                            required
-                            defaultValue={shortDescription}
-                        ></textarea>
-                    </div>
-                    <div>
-                        <div>Long Description</div>
-                        <textarea
-                            name="longDescription"
-                            className="w-full rounded-md"
-                            id=""
-                            rows="7"
-                            placeholder="Long Description"
-                            required
-                            defaultValue={longDescription}
-                        ></textarea>
-                    </div>
+            {loading ? (
+                <div>
+                    <Skeleton height={30} count={4} />
+                    <Skeleton height={50} count={1} />
+                    <Skeleton height={30} count={1} />
+                </div>
+            ) : (
+                <div>
+                    <form
+                        action=""
+                        onSubmit={handleUpdateBlog}
+                        className="space-y-6 w-[75%] mx-auto"
+                    >
+                        <div className="">
+                            <div>Banner Image Url</div>
+                            <input
+                                type="text"
+                                placeholder="Banner Image URL"
+                                name="banner_image_url"
+                                className="_input w-full"
+                                required
+                                defaultValue={bannerUrl}
+                            />
+                        </div>
+                        <div>
+                            <div>Blog Title</div>
+                            <input
+                                type="text"
+                                placeholder="Title"
+                                name="blog_title"
+                                className="_input w-full"
+                                required
+                                defaultValue={title}
+                            />
+                        </div>
+                        <div>
+                            <div>Category</div>
+                            <select
+                                name="category"
+                                id=""
+                                className="w-full cursor-pointer"
+                                required
+                                value={categoryInputVal}
+                                onChange={handleCategoryChange}
+                            >
+                                <option value="artificial_intelligence">
+                                    Artificial Intelligence
+                                </option>
+                                <option value="web_development">Web Development</option>
+                                <option value="data_science">Data Science</option>
+                                <option value="cybersecurity">Cybersecurity</option>
+                                <option value="robotics">Robotics</option>
+                            </select>
+                        </div>
+                        <div>
+                            <div>Short Description</div>
+                            <textarea
+                                name="shortDescription"
+                                className="w-full rounded-md"
+                                id=""
+                                placeholder="Short Description"
+                                required
+                                defaultValue={shortDescription}
+                            ></textarea>
+                        </div>
+                        <div>
+                            <div>Long Description</div>
+                            <textarea
+                                name="longDescription"
+                                className="w-full rounded-md"
+                                id=""
+                                rows="7"
+                                placeholder="Long Description"
+                                required
+                                defaultValue={longDescription}
+                            ></textarea>
+                        </div>
 
-                    <div>
-                        <input
-                            type="submit"
-                            className="_btn _btn-primary w-full"
-                            value="Update Blog"
-                        />
-                    </div>
-                </form>
-            </div>
+                        <div>
+                            <input
+                                type="submit"
+                                className="_btn _btn-primary w-full"
+                                value="Update Blog"
+                            />
+                        </div>
+                    </form>
+                </div>
+            )}
         </div>
     );
 };

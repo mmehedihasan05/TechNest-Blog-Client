@@ -4,6 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../AuthProvider";
 import BlogCard from "../../Components/BlogCard";
 import SectionTitle from "../../Components/SectionTitle";
+import SkeletorForCard from "../../Components/SkeletorForCard";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import { OtherContext } from "../../Root";
 
@@ -37,6 +38,19 @@ const EditorsPick = () => {
     return (
         <div className="space-y-8">
             <SectionTitle data={titleInfo}></SectionTitle>
+
+            {editorsPickBlogData.length === 0 ? (
+                <div className="grid grid-cols-2 gap-6">
+                    <SkeletorForCard></SkeletorForCard>
+                    <SkeletorForCard></SkeletorForCard>
+                    <SkeletorForCard></SkeletorForCard>
+                    <SkeletorForCard></SkeletorForCard>
+                    <SkeletorForCard></SkeletorForCard>
+                    <SkeletorForCard></SkeletorForCard>
+                </div>
+            ) : (
+                ""
+            )}
 
             <div className="grid grid-cols-2 gap-6">
                 {editorsPickBlogData.map((blogData, idx) => (

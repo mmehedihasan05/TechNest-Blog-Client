@@ -9,6 +9,7 @@ import { useContext, useEffect } from "react";
 import { AuthContext } from "../../AuthProvider";
 import { useState } from "react";
 import { OtherContext } from "../../Root";
+import SkeletorForCard from "../../Components/SkeletorForCard";
 
 const RecentBlogs = () => {
     const axiosSecure = useAxiosSecure();
@@ -44,6 +45,19 @@ const RecentBlogs = () => {
     return (
         <div className="space-y-8">
             <SectionTitle data={titleInfo}></SectionTitle>
+
+            {recentBlogData.length === 0 ? (
+                <div className="grid grid-cols-2 gap-6">
+                    <SkeletorForCard></SkeletorForCard>
+                    <SkeletorForCard></SkeletorForCard>
+                    <SkeletorForCard></SkeletorForCard>
+                    <SkeletorForCard></SkeletorForCard>
+                    <SkeletorForCard></SkeletorForCard>
+                    <SkeletorForCard></SkeletorForCard>
+                </div>
+            ) : (
+                ""
+            )}
 
             <div className="grid grid-cols-2 gap-6">
                 {recentBlogData.map((blogData, idx) => (

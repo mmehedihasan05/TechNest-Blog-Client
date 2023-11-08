@@ -3,6 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../AuthProvider";
 import BlogCard from "../Components/BlogCard";
 import SectionTitle from "../Components/SectionTitle";
+import SkeletorForCard from "../Components/SkeletorForCard";
 import useAxiosSecure from "../hooks/useAxiosSecure";
 import { OtherContext } from "../Root";
 
@@ -11,6 +12,7 @@ const Wishlist = () => {
     const { currentUser } = useContext(AuthContext);
     const [wishlistBlogData, setwishlistBlogData] = useState([]);
     const { wishlistUpdated } = useContext(OtherContext);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const userId = localStorage.getItem("userId");
@@ -19,7 +21,7 @@ const Wishlist = () => {
             .get(`/wishlist?userid=${userId}`)
             .then((data) => {
                 setwishlistBlogData(data.data);
-                // setLoading(false);
+                setLoading(false);
             })
             .catch((error) => console.log(error));
     }, [currentUser, wishlistUpdated]);
@@ -30,6 +32,18 @@ const Wishlist = () => {
         <div className="space-y-8 custom-width">
             <SectionTitle data={{ title: "Wishlist Blogs", noBorder: true }}></SectionTitle>
 
+            {loading ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <SkeletorForCard></SkeletorForCard>
+                    <SkeletorForCard></SkeletorForCard>
+                    <SkeletorForCard></SkeletorForCard>
+                    <SkeletorForCard></SkeletorForCard>
+                    <SkeletorForCard></SkeletorForCard>
+                    <SkeletorForCard></SkeletorForCard>
+                </div>
+            ) : (
+                ""
+            )}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {wishlistBlogData.map((blogData, idx) => (
                     <BlogCard key={idx} blogData={blogData}></BlogCard>

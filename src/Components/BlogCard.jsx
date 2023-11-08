@@ -11,7 +11,6 @@ import { Tooltip } from "flowbite-react";
 import { categoryFormatter } from "../Utilities/Functionalities";
 
 const BlogCard = ({ blogData }) => {
-    const axiosSecure = useAxiosSecure();
     const { addWishlist, removeWishlist } = useContext(OtherContext);
 
     const { _id, bannerUrl, title, category, shortDescription, wishlist, creationTime } = blogData;

@@ -14,7 +14,8 @@ import { OtherContext } from "../Root";
 import { categoryFormatter, formatLongDescription } from "../Utilities/Functionalities";
 import { PhotoProvider, PhotoView } from "react-photo-view";
 import "react-photo-view/dist/react-photo-view.css";
-
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 const BlogDetails = () => {
     const { blog_id } = useParams();
     const axiosSecure = useAxiosSecure();
@@ -38,7 +39,15 @@ const BlogDetails = () => {
     }, [currentUser, wishlistUpdated]);
 
     if (!blogData) {
-        return;
+        return (
+            <div className="custom-width">
+                <Skeleton height={75} count={1} />
+                <Skeleton height={300} count={1} />
+                <Skeleton height={40} count={1} />
+
+                <Skeleton count={20} />
+            </div>
+        );
     }
 
     const {
