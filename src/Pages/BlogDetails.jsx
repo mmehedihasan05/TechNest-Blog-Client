@@ -16,6 +16,9 @@ import { PhotoProvider, PhotoView } from "react-photo-view";
 import "react-photo-view/dist/react-photo-view.css";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import { Button, Label, TextInput } from "flowbite-react";
+import toast from "react-hot-toast";
+
 const BlogDetails = () => {
     const { blog_id } = useParams();
     const axiosSecure = useAxiosSecure();
@@ -66,7 +69,42 @@ const BlogDetails = () => {
         ? authorImage
         : "https://i.ibb.co/YQnZ4sL/user-profile-9368192.png";
 
-    const handleComment = () => {};
+    const handleComment = (e) => {
+        e.preventDefault();
+
+        let form = e.target;
+        console.log(form.comment.value);
+
+        let commentData = {
+            blog_id: blog_id,
+            commentInfo: {
+                comment: form.comment.value,
+                commented_userName: currentUser.displayName,
+                commented_userImage: currentUser.photoURL,
+            },
+        };
+
+        return toast.promise(
+            axiosSecure
+                .post("/comment", commentData)
+                .then((response) => {
+                    if (response.data.acknowledged) {
+                        form.reset();
+                        return <b>Comment Posted Successfully.</b>;
+                    } else {
+                        throw new Error("Failed to Post Comment!");
+                    }
+                })
+                .catch((error) => {
+                    console.log(error);
+                }),
+            {
+                loading: "Posting Comment...",
+                success: (message) => message,
+                error: (error) => <b>Failed to Post Comment!</b>,
+            }
+        );
+    };
 
     const handleUpdate = () => {};
 
@@ -179,25 +217,54 @@ const BlogDetails = () => {
                 <hr />
                 <div>
                     {/* Comment or Warning to login */}
-                    <div className="flex items-center gap-4 w-full">
-                        <img
-                            src={currentUser?.photoURL || "/no_face.png"}
-                            className="h-[45px] w-[45px] rounded-full"
-                        />
-                        <form
-                            action=""
-                            onClick={handleComment}
-                            className="flex items-center gap-4 w-[75%]"
-                        >
-                            <textarea
-                                name="comment"
-                                className="w-full rounded-md"
-                                placeholder="Leave a comment"
-                                required
-                            ></textarea>
-                            <input type="submit" className="_btn _btn-secondary" value="Post" />
-                        </form>
-                    </div>
+                    {authorUserId === currentUser?.uid ? (
+                        <div className="flex items-center gap-4 w-full">
+                            <img
+                                src={currentUser?.photoURL || "/no_face.png"}
+                                className="h-[45px] w-[45px] rounded-full"
+                            />
+
+                            <form action="" className="flex items-center gap-4 w-[75%]">
+                                <TextInput
+                                    className="w-full rounded-md h-[50px]"
+                                    name="comment"
+                                    type="text"
+                                    id="disabledInput1"
+                                    placeholder="Leave a comment"
+                                    disabled
+                                    title="Author cannot comment on own post!"
+                                />
+
+                                <Button
+                                    className="bg-[--text-highlight]"
+                                    disabled
+                                    title="Author cannot comment on own post!"
+                                >
+                                    Post
+                                </Button>
+                            </form>
+                        </div>
+                    ) : (
+                        <div className="flex items-center gap-4 w-full">
+                            <img
+                                src={currentUser?.photoURL || "/no_face.png"}
+                                className="h-[45px] w-[45px] rounded-full"
+                            />
+                            <form
+                                action=""
+                                onSubmit={handleComment}
+                                className="flex items-center gap-4 w-[75%]"
+                            >
+                                <textarea
+                                    name="comment"
+                                    className="w-full rounded-md"
+                                    placeholder="Leave a comment"
+                                    required
+                                ></textarea>
+                                <input type="submit" className="_btn _btn-secondary" value="Post" />
+                            </form>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>
