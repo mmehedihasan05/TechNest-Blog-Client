@@ -34,16 +34,12 @@ const Home = () => {
                 {/* Right Side Small : 1 Part */}
                 <div className=" space-y-12">
                     <div>
-                        ShowByCategories
-                        <ShowByCategories></ShowByCategories>
-                    </div>
-                    <div className="mt-8">
-                        Ads
-                        <Ads></Ads>
-                    </div>
-                    <div className="mt-8">
-                        NewsLetter
                         <NewsLetter></NewsLetter>
+                    </div>
+                    <div className="mt-8">{/* <ShowByCategories></ShowByCategories> */}</div>
+
+                    <div className="mt-8">
+                        <Ads></Ads>
                     </div>
                 </div>
             </div>

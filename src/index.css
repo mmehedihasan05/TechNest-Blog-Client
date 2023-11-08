@@ -114,7 +114,8 @@ form textarea:focus,
 form select:focus,
 form input[name="searchTitle"]:focus,
 form [name="category"]:focus,
-form .searchFieldParent:focus-within {
+form .searchFieldParent:focus-within,
+#email4:focus {
     outline: 1px solid var(--text-primary);
     outline-offset: 0px;
     border-color: var(--text-primary);
