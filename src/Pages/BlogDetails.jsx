@@ -18,14 +18,18 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { Button, Label, TextInput } from "flowbite-react";
 import toast from "react-hot-toast";
+import CommentCard from "../Components/CommentCard";
 
 const BlogDetails = () => {
     const { blog_id } = useParams();
     const axiosSecure = useAxiosSecure();
     const [blogData, setBlogData] = useState();
+    const [commentList, setCommentList] = useState([]);
     const { currentUser } = useContext(AuthContext);
     const { wishlistUpdated, addWishlist, removeWishlist } = useContext(OtherContext);
+    const [commentUpdate, setCommentUpdate] = useState(true);
 
+    // Blog data fetching
     useEffect(() => {
         console.log("currentUser", currentUser);
 
@@ -40,6 +44,24 @@ const BlogDetails = () => {
             })
             .catch((error) => console.log(error));
     }, [currentUser, wishlistUpdated]);
+
+    // Comments fetching
+    useEffect(() => {
+        axiosSecure
+            .get(`/comment-list/${blog_id}`)
+            .then((data) => {
+                console.log("comment data", data.data);
+                // data empty hoite pare
+
+                if (data.data.commentInfo) {
+                    setCommentList(data.data.commentInfo);
+                } else {
+                    setCommentList([]);
+                }
+                // setLoading(false);
+            })
+            .catch((error) => console.log(error));
+    }, [commentUpdate]);
 
     if (!blogData) {
         return (
@@ -90,6 +112,7 @@ const BlogDetails = () => {
                 .then((response) => {
                     if (response.data.acknowledged) {
                         form.reset();
+                        setCommentUpdate(!commentUpdate);
                         return <b>Comment Posted Successfully.</b>;
                     } else {
                         throw new Error("Failed to Post Comment!");
@@ -105,8 +128,6 @@ const BlogDetails = () => {
             }
         );
     };
-
-    const handleUpdate = () => {};
 
     return (
         <div className="custom-width space-y-6">
@@ -217,33 +238,10 @@ const BlogDetails = () => {
                 <hr />
                 <div>
                     {/* Comment or Warning to login */}
-                    {authorUserId === currentUser?.uid ? (
-                        <div className="flex items-center gap-4 w-full">
-                            <img
-                                src={currentUser?.photoURL || "/no_face.png"}
-                                className="h-[45px] w-[45px] rounded-full"
-                            />
-
-                            <form action="" className="flex items-center gap-4 w-[75%]">
-                                <TextInput
-                                    className="w-full rounded-md h-[50px]"
-                                    name="comment"
-                                    type="text"
-                                    id="disabledInput1"
-                                    placeholder="Leave a comment"
-                                    disabled
-                                    title="Author cannot comment on own post!"
-                                />
-
-                                <Button
-                                    className="bg-[--text-highlight]"
-                                    disabled
-                                    title="Author cannot comment on own post!"
-                                >
-                                    Post
-                                </Button>
-                            </form>
-                        </div>
+                    {!currentUser ? (
+                        <h3 className="text-2xl font-semibold">Please login to comment!</h3>
+                    ) : authorUserId === currentUser?.uid ? (
+                        <h3 className="text-2xl font-semibold">Author cannot comment own post!</h3>
                     ) : (
                         <div className="flex items-center gap-4 w-full">
                             <img
@@ -265,6 +263,13 @@ const BlogDetails = () => {
                             </form>
                         </div>
                     )}
+                </div>
+
+                {/* All comments */}
+                <div className="flex flex-col gap-4">
+                    {commentList.map((commentData, idx) => (
+                        <CommentCard key={idx} commentData={commentData}></CommentCard>
+                    ))}
                 </div>
             </div>
         </div>
