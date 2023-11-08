@@ -18,6 +18,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import AuthProvider from "./AuthProvider";
 import BlogDetails from "./Pages/BlogDetails";
 import UpdateBlog from "./Pages/UpdateBlog";
+import PrivateRoute from "./PrivateRoute";
 
 const router = createBrowserRouter([
     {
@@ -26,10 +27,21 @@ const router = createBrowserRouter([
         errorElement: <ErrorPage />,
         children: [
             { path: "/", element: <Home /> },
-            { path: "/addblog", element: <AddBlog /> },
+            {
+                path: "/addblog",
+                element: (
+                    <PrivateRoute>
+                        <AddBlog />
+                    </PrivateRoute>
+                ),
+            },
             {
                 path: "/updateBlog/:blog_id",
-                element: <UpdateBlog />,
+                element: (
+                    <PrivateRoute>
+                        <UpdateBlog />
+                    </PrivateRoute>
+                ),
             },
             { path: "/allblogs", element: <AllBlog /> },
             { path: "/featuredblogs", element: <FeaturedBlogs /> },
