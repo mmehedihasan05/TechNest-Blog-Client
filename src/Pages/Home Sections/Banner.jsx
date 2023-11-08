@@ -46,11 +46,6 @@ const Banner = () => {
         },
     ];
 
-    /*
-    1597 * 717
-    1600 * 710
-    */
-
     return (
         <div className="banner_ custom-width custom-width-nospace">
             <Swiper
@@ -84,7 +79,7 @@ const Banner = () => {
                                 flex items-center justify-center "
                                 >
                                     <div>
-                                        <h1 className="mb-5 text-6xl font-bold text-[--banner-primary] ">
+                                        <h1 className="mb-5 text-3xl md:text-6xl font-bold text-[--banner-primary] ">
                                             {slide.title}
                                         </h1>
                                         <p className="mb-5 text-2xl text-[--banner-secondary]">

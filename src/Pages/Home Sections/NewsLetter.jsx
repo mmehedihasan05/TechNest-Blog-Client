@@ -16,7 +16,7 @@ const NewsLetter = () => {
     };
 
     return (
-        <div className="space-y-4">
+        <div className="space-y-4 mt-8 lg:mt-0">
             <SectionTitle
                 data={{
                     title: "Newsletter",
@@ -25,7 +25,7 @@ const NewsLetter = () => {
                 }}
             ></SectionTitle>
             <form action="" onSubmit={handleSubscribe} className="space-y-6">
-                <div className="max-w-md">
+                <div className="max-w-md mx-auto">
                     <TextInput
                         id="email4"
                         type="email"

@@ -179,40 +179,13 @@ const AuthProvider = ({ children }) => {
             setLoading(false);
             setCurrentUser(user);
 
-            console.log(user);
-
-            /*
-            ekhane jhankar vai direct email na pele state theke newar try korse. But erkm dorkar hoy na, user theke always pawa jacche, and user er info e state e set hocche tar sathe kichukkhn time o jacche.
-            const currentUserEmail = user?.email || currentUser?.email
-
-            tai ami just user theke e nilam.
-
-            axios.post(api_url, post_message, { withCredentials: true })
-            */
-
             const email = user?.email;
-
             if (email) {
                 localStorage.setItem("userId", user.uid);
                 localStorage.setItem("userEmail", user.email);
-
-                console.log("Log in condition", { email });
-
-                axiosSecure
-                    .post(`/authenticate`, { email })
-                    .then((response) => console.log("JWT || Authentication Success", response))
-                    .catch((jwt_Error) => {
-                        // console.log(jwt_Error);
-                        console.log(
-                            "JWT || Authentication Failed",
-                            jwt_Error.response.data,
-                            jwt_Error.response.status
-                        );
-                    });
             } else {
                 localStorage.removeItem("userId");
                 localStorage.removeItem("userEmail");
-                console.log("Log out condition");
             }
         });
 

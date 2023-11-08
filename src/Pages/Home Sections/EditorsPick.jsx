@@ -52,7 +52,7 @@ const EditorsPick = () => {
                 ""
             )}
 
-            <div className="grid grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {editorsPickBlogData.map((blogData, idx) => (
                     <BlogCard key={idx} blogData={blogData}></BlogCard>
                 ))}

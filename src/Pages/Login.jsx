@@ -44,7 +44,7 @@ const Login = () => {
                 {/* Full Form */}
                 <div
                     className="
-                 w-[85%] md:w-[90%] mx-auto h-[80vh]
+                 w-[85%] md:w-[90%] mx-auto lg:h-[80vh]
                  grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 
                  py-8 "
                 >
@@ -129,104 +129,9 @@ const Login = () => {
                         </h2>
                         <div className="text-xl flex justify-center">
                             <Link to="/register">
-                                <button className="_btn _btn-fill ml-4 px-16">Register</button>
+                                <button className="_btn _btn-readmore ml-4 px-16">Register</button>
                             </Link>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
-
-    return (
-        <div className="max-w-6xl h-[75vh] mx-auto bg-[--bg-white] shadow-lg rounded-md px-6">
-            <div
-                className="
-                 grid grid-cols-2 md:py-0 h-full  gap-8"
-            >
-                {/* Left Side: Toogle */}
-                <div
-                    className=" _sub-content
-                  space-y-8
-                    flex items-center
-                    "
-                >
-                    <div className=" ">
-                        <div className=" space-y-4">
-                            <h2 className=" text-2xl lg:text-3xl font-bold">
-                                Don't Have an Account?
-                            </h2>
-                            <div className="text-xl">
-                                <Link to="/register">
-                                    <button className="_btn _btn-secondary">Register</button>
-                                </Link>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* <div className="self-end">
-                        <img src="/images/authentication-1.png" alt="" />
-                    </div> */}
-                </div>
-
-                {/* Right Side: Login Form */}
-                <div
-                    className=" rounded-lg md:rounded-none md:rounded-r-lg space-y-2
-                    flex flex-col items-center justify-center 
-                    contactFormParent"
-                >
-                    <form
-                        onSubmit={handleLogin}
-                        className="contactFormParent w-full
-                        flex flex-col gap-6"
-                    >
-                        <input
-                            type="email"
-                            placeholder="Email Address"
-                            name="email"
-                            className="_input"
-                            required
-                            defaultValue="sad3@gmail.com"
-                        />
-
-                        <div className="passwordParent">
-                            <input
-                                type={showPassword ? "text" : "password"}
-                                placeholder="Password"
-                                name="password"
-                                className="_input password"
-                                required
-                                defaultValue="sad##sad55_"
-                            />
-                            <div className="text-2xl cursor-pointer place-self-center passwordEye">
-                                {showPassword ? (
-                                    <AiFillEye
-                                        onClick={() => setShowPassword(!showPassword)}
-                                    ></AiFillEye>
-                                ) : (
-                                    <AiFillEyeInvisible
-                                        onClick={() => setShowPassword(!showPassword)}
-                                    ></AiFillEyeInvisible>
-                                )}
-                            </div>
-                        </div>
-
-                        <input className="_btn _btn-primary" type="submit" value="Login" />
-                    </form>
-
-                    <Authentication_3rdParty actionName="login"></Authentication_3rdParty>
-                </div>
-
-                {/* For mobile */}
-                <div
-                    className=" block md:hidden w-full col-span-2 my-8 
-                    rounded-lg px-2 py-4 authentication-toggle"
-                >
-                    <h2 className="text-lg  _text-deep font-bold pb-2">Don't Have an Account?</h2>
-                    <div className="text-xl flex justify-center">
-                        <Link to="/register">
-                            <button className="_btn _btn-fill ml-4 px-16">Register</button>
-                        </Link>
                     </div>
                 </div>
             </div>

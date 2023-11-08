@@ -18,27 +18,33 @@ const Root = () => {
     const addWishlist = (blog_id) => {
         if (!currentUser) {
             toast.error("Login to bookmark!");
-
             return;
         }
 
-        axiosSecure
-            .patch("/addWishlist", {
-                time: new Date().toISOString(),
-                blogId: blog_id,
-                userId: currentUser.uid,
-            })
-            .then((response) => {
-                console.log(response.data);
-                // Reset form after successfull login
-
-                if (response.data.acknowledged) {
-                    setWishlistUpdated(!wishlistUpdated);
-                }
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+        return toast.promise(
+            axiosSecure
+                .patch("/addWishlist", {
+                    time: new Date().toISOString(),
+                    blogId: blog_id,
+                    userId: currentUser.uid,
+                })
+                .then((response) => {
+                    if (response.data.acknowledged) {
+                        setWishlistUpdated(!wishlistUpdated);
+                        return <b>Blog added to wishlist.</b>;
+                    } else {
+                        throw new Error("Failed to add wishlist!");
+                    }
+                })
+                .catch((error) => {
+                    console.log(error);
+                }),
+            {
+                loading: "Adding to wishlist...",
+                success: (message) => message,
+                error: (error) => <b>Failed to add wishlist!</b>,
+            }
+        );
     };
 
     const removeWishlist = (blog_id) => {
@@ -47,22 +53,33 @@ const Root = () => {
 
             return;
         }
-        axiosSecure
-            .patch("/removeWishlist", {
-                time: new Date().toISOString(),
-                blogId: blog_id,
-                userId: currentUser.uid,
-            })
-            .then((response) => {
-                console.log(response.data);
 
-                if (response.data.acknowledged) {
-                    setWishlistUpdated(!wishlistUpdated);
-                }
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+        return toast.promise(
+            axiosSecure
+                .patch("/removeWishlist", {
+                    time: new Date().toISOString(),
+                    blogId: blog_id,
+                    userId: currentUser.uid,
+                })
+                .then((response) => {
+                    console.log(response.data);
+
+                    if (response.data.acknowledged) {
+                        setWishlistUpdated(!wishlistUpdated);
+                        return <b>Blog removed from wishlist.</b>;
+                    } else {
+                        throw new Error("Failed to remove from wishlist!");
+                    }
+                })
+                .catch((error) => {
+                    console.log(error);
+                }),
+            {
+                loading: "Removing from wishlist...",
+                success: (message) => message,
+                error: (error) => <b>Failed to remove from wishlist!</b>,
+            }
+        );
     };
 
     const functionalities = {

@@ -38,7 +38,7 @@
     background: var(--banner-btn);
 }
 
-/* @media only screen and (max-width: 426px) {
+@media only screen and (max-width: 426px) {
     .banner_ .swiper {
         height: 50vh;
     }
@@ -53,4 +53,4 @@
     .banner_ .swiper {
         height: 35vh;
     }
-} */
+}

@@ -135,7 +135,9 @@ const BlogDetails = () => {
             <div>
                 <p className="text-highlight font-medium ">{categoryFormatter(category)}</p>
 
-                <h1 className="text-primary sectionHeading text-5xl font-semibold ">{title}</h1>
+                <h1 className="text-primary sectionHeading text-3xl md:text-5xl font-semibold ">
+                    {title}
+                </h1>
             </div>
 
             {/* Banner Image */}
@@ -144,7 +146,7 @@ const BlogDetails = () => {
                 <PhotoProvider className="">
                     <PhotoView src={bannerUrl}>
                         <img
-                            className="rounded-md w-auto h-[60vh] mx-auto object-cover cursor-pointer"
+                            className="rounded-md w-auto h-[40vh] md:h-[60vh] mx-auto object-cover cursor-pointer"
                             src={bannerUrl}
                             alt=""
                         />
@@ -233,7 +235,7 @@ const BlogDetails = () => {
             {/* Comment */}
             <div className="space-y-4">
                 <div>
-                    <h2 className="text-3xl font-bold">Comments</h2>
+                    <h2 className="text-2xl md:text-3xl font-bold">Comments</h2>
                 </div>
                 <hr />
                 <div>

@@ -6,7 +6,9 @@ const SectionTitle = ({ data }) => {
             {noBorder ? "" : <div className="border-b-[3px] w-36 border-[--text-highlight]"></div>}
 
             <div className="text-center px-4">
-                <h1 className="text-primary sectionHeading text-4xl font-semibold ">{title}</h1>
+                <h1 className="text-primary sectionHeading text-3xl md:text-4xl font-semibold ">
+                    {title}
+                </h1>
                 <div className="">{description}</div>
             </div>
             {noBorder ? "" : <div className="border-b-[3px] w-36 border-[--text-highlight]"></div>}

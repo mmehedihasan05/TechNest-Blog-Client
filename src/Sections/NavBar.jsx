@@ -5,6 +5,8 @@ import { HiOutlineMenuAlt1 } from "react-icons/hi";
 import { RxCross1 } from "react-icons/rx";
 import { NavLink } from "react-router-dom";
 import { AuthContext } from "../AuthProvider";
+import { Dropdown } from "flowbite-react";
+import { GrLogout } from "react-icons/gr";
 
 const NavBar = () => {
     const { logout, currentUser } = useContext(AuthContext);
@@ -45,9 +47,9 @@ const NavBar = () => {
 "
             >
                 {/* Main Logo */}
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2 md:gap-4 menuFirst">
                     {/* Hide in Large device */}
-                    <div className="text-3xl block lg:hidden">
+                    <div className="text-xl md:text-3xl block lg:hidden">
                         <div onClick={handleMenuShow} className="">
                             {menuShow ? (
                                 <RxCross1></RxCross1>
@@ -56,9 +58,10 @@ const NavBar = () => {
                             )}
                         </div>
                     </div>
+
                     <div>
                         <NavLink to="/">
-                            <img className="w-[180px] " src="/Logo.png" alt="" />
+                            <img className="w-[120px] md:w-[180px] " src="/Logo.png" alt="" />
                         </NavLink>
                     </div>
                 </div>
@@ -120,18 +123,20 @@ const NavBar = () => {
                         <div className="flex gap-2 justify-center items-center">
                             <img
                                 src={currentUser.photoURL || "/no_user.png"}
-                                className="h-[32px] w-[32px] rounded-full"
+                                className="h-[24px] w-[24px] md:h-[32px] md:w-[32px] rounded-full"
+                                title={currentUser.displayName}
                             />
 
                             <button
-                                className="_btn hidden md:block font-semibold hover:text-[--text-highlight]"
+                                className="_btn block font-semibold hover:text-[--text-highlight]"
                                 onClick={handleLogout}
+                                title="Logout"
                             >
-                                Logout
+                                <GrLogout></GrLogout>
                             </button>
                         </div>
                     ) : (
-                        <div className="hidden md:flex px-1 gap-6 justify-center font-semibold">
+                        <div className="flex px-1 gap-2 text-sm md:text-base md:gap-6 justify-center font-semibold">
                             <NavLink
                                 className={({ isActive, isPending }) =>
                                     isActive

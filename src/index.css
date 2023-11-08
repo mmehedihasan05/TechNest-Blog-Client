@@ -192,6 +192,8 @@ form .passwordEye {
 .react_data_table div {
     white-space: normal !important;
 }
+
+/* Flowbite menu */
 @media only screen and (max-width: 426px) {
     .react_data_table div {
         white-space: nowrap !important;

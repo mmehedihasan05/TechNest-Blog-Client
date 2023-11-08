@@ -73,7 +73,7 @@ const Register = () => {
 
                 {/* Full Form */}
                 <div
-                    className="w-[85%] md:w-[90%] mx-auto h-[80vh]
+                    className="w-[85%] md:w-[90%] mx-auto lg:h-[80vh]
                  grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 
                  py-8"
                 >
@@ -169,15 +169,15 @@ const Register = () => {
 
                     {/* For mobile */}
                     <div
-                        className=" block md:hidden w-full col-span-2 my-8 
+                        className=" block w-full col-span-2 my-8 
                     rounded-lg px-2 py-4 authentication-toggle"
                     >
                         <h2 className="text-lg  _text-deep font-bold pb-2">
-                            Don't Have an Account?
+                            Already Have an Account?
                         </h2>
                         <div className="text-xl flex justify-center">
-                            <Link to="/register">
-                                <button className="_btn _btn-fill ml-4 px-16">Register</button>
+                            <Link to="/login">
+                                <button className="_btn _btn-readmore">Login</button>
                             </Link>
                         </div>
                     </div>

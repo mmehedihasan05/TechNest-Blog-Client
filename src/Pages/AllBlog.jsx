@@ -69,8 +69,8 @@ const AllBlog = () => {
             {/* Search and Filter */}
             <div>
                 <form action="" onSubmit={handleSearch}>
-                    <div className="flex gap-2">
-                        <div className="searchFieldParent w-[80%] flex">
+                    <div className="flex flex-col md:flex-row gap-2">
+                        <div className="searchFieldParent w-ful md:w-[80%] flex">
                             <input
                                 type="text"
                                 name="searchTitle"
