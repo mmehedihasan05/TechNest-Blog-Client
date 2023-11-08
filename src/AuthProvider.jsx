@@ -138,7 +138,11 @@ const AuthProvider = ({ children }) => {
             .then(() => {
                 axiosSecure
                     .post(`/logout`, { email: currentUser?.email }, { withCredentials: true })
-                    .then((response) => console.log("JWT || Logged Out Successfully ", response))
+                    .then((response) => {
+                        localStorage.removeItem("userId");
+                        localStorage.removeItem("userEmail");
+                        console.log("JWT || Logged Out Successfully ", response);
+                    })
                     .catch((jwt_Error) => {
                         console.log(
                             "JWT || Log Out Failed",
@@ -189,6 +193,9 @@ const AuthProvider = ({ children }) => {
             const email = user?.email;
 
             if (email) {
+                localStorage.setItem("userId", user.uid);
+                localStorage.setItem("userEmail", user.email);
+
                 console.log("Log in condition", { email });
 
                 axiosSecure
@@ -203,6 +210,8 @@ const AuthProvider = ({ children }) => {
                         );
                     });
             } else {
+                localStorage.removeItem("userId");
+                localStorage.removeItem("userEmail");
                 console.log("Log out condition");
             }
         });

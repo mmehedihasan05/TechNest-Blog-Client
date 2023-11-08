@@ -22,16 +22,17 @@ const BlogDetails = () => {
 
     useEffect(() => {
         console.log("currentUser", currentUser);
-        if (currentUser === null || currentUser) {
-            axiosSecure
-                .get(`/blogDetails/${blog_id}?userid=${currentUser?.uid}`)
-                .then((data) => {
-                    console.log(data.data);
-                    setBlogData(data.data);
-                    // setLoading(false);
-                })
-                .catch((error) => console.log(error));
-        }
+
+        const userId = localStorage.getItem("userId");
+
+        axiosSecure
+            .get(`/blogDetails/${blog_id}?userid=${userId}`)
+            .then((data) => {
+                console.log(data.data);
+                setBlogData(data.data);
+                // setLoading(false);
+            })
+            .catch((error) => console.log(error));
     }, [currentUser, wishlistUpdated]);
 
     if (!blogData) {
@@ -93,14 +94,14 @@ const BlogDetails = () => {
                 </div>
                 <div className="flex items-center gap-4">
                     {/* Update post */}
-                    {authorUserId === currentUser.uid ? (
+                    {authorUserId === currentUser?.uid ? (
                         <div className="  text-[--text-primary] hover:text-[--text-highlight]">
                             <Tooltip content="Update Post">
-                                <button className="_btn">
-                                    <NavLink to={`/updateBlog/${_id}`}>
+                                <NavLink to={`/updateBlog/${_id}`}>
+                                    <button className="_btn">
                                         <BsPencil className="text-xl"></BsPencil>
-                                    </NavLink>
-                                </button>
+                                    </button>
+                                </NavLink>
                             </Tooltip>
                         </div>
                     ) : (

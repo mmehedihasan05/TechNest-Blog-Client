@@ -32,7 +32,7 @@ const Root = () => {
                 console.log(response.data);
                 // Reset form after successfull login
 
-                if (response.data.modifiedCount > 0) {
+                if (response.data.acknowledged) {
                     setWishlistUpdated(!wishlistUpdated);
                 }
             })
@@ -56,7 +56,7 @@ const Root = () => {
             .then((response) => {
                 console.log(response.data);
 
-                if (response.data.modifiedCount > 0) {
+                if (response.data.acknowledged) {
                     setWishlistUpdated(!wishlistUpdated);
                 }
             })

@@ -1,22 +1,28 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { useLoaderData, useParams } from "react-router-dom";
+import { Navigate, useLoaderData, useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../AuthProvider";
 import SectionTitle from "../Components/SectionTitle";
 import useAxiosSecure from "../hooks/useAxiosSecure";
+import { categoryFormatter } from "../Utilities/Functionalities";
 
 const UpdateBlog = () => {
     const { blog_id } = useParams();
     const axiosSecure = useAxiosSecure();
     const [blogData, setBlogData] = useState({});
+    const navigate = useNavigate();
+    const [categoryInputVal, setCategoryInputVal] = useState("");
 
     useEffect(() => {
+        const userId = localStorage.getItem("userId");
+
         axiosSecure
-            .get(`/blogDetails/${blog_id}?userid=${undefined}`)
+            .get(`/blogDetails/${blog_id}?userid=${userId}`)
             .then((data) => {
                 console.log(data.data);
                 setBlogData(data.data);
+                setCategoryInputVal(data.data?.category);
                 // setLoading(false);
             })
             .catch((error) => console.log(error));
@@ -35,34 +41,25 @@ const UpdateBlog = () => {
         const shortDescription = form.shortDescription.value;
         const longDescription = form.longDescription.value;
 
-        const currentDate = new Date();
-        const isoString = currentDate.toISOString();
-
         const blogData = {
             bannerUrl,
             title,
             category,
             shortDescription,
             longDescription,
-            creationTime: isoString,
-            authorInfo: {
-                name: currentUser.displayName,
-                imageUrl: currentUser.photoURL,
-                userId: currentUser.uid,
-            },
         };
-        console.log(blogData);
 
         return toast.promise(
             axiosSecure
-                .post(`/updateBlog/${blog_id}?userid=${currentUser?.uid}`, blogData)
+                .put(`/updateBlog/${blog_id}?userid=${currentUser?.uid}`, blogData)
                 .then((response) => {
                     console.log(response.data);
                     if (response.data.acknowledged) {
-                        form.reset();
-                        return <b>Blog Published Successfully.</b>;
+                        navigate(`/blogDetails/${blog_id}`);
+
+                        return <b>Blog Updated Successfully.</b>;
                     } else {
-                        throw new Error("Failed to publish blog!");
+                        throw new Error("Failed to update blog!");
                     }
                 })
                 .catch((error) => {
@@ -71,12 +68,17 @@ const UpdateBlog = () => {
             {
                 loading: "Publishing blog...",
                 success: (message) => message,
-                error: (error) => <b>Failed to publish blog!</b>,
+                error: (error) => <b>Failed to update blog!</b>,
             }
         );
     };
 
+    const handleCategoryChange = (e) => {
+        setCategoryInputVal(e.target.value);
+    };
+
     const { bannerUrl, title, category, shortDescription, longDescription } = blogData;
+    console.log(category);
 
     return (
         <div className="custom-width sapce-y-10">
@@ -107,28 +109,19 @@ const UpdateBlog = () => {
                     </div>
                     <div>
                         <div>Category</div>
-                        <select name="category" id="" className="w-full cursor-pointer" required>
-                            <option
-                                selected={category === "artificial_intelligence"}
-                                value="artificial_intelligence"
-                            >
-                                Artificial Intelligence
-                            </option>
-                            <option
-                                selected={category === "web_development"}
-                                value="web_development"
-                            >
-                                Web Development
-                            </option>
-                            <option selected={category === "data_science"} value="data_science">
-                                Data Science
-                            </option>
-                            <option selected={category === "cybersecurity"} value="cybersecurity">
-                                Cybersecurity
-                            </option>
-                            <option selected={category === "robotics"} value="robotics">
-                                Robotics
-                            </option>
+                        <select
+                            name="category"
+                            id=""
+                            className="w-full cursor-pointer"
+                            required
+                            value={categoryInputVal}
+                            onChange={handleCategoryChange}
+                        >
+                            <option value="artificial_intelligence">Artificial Intelligence</option>
+                            <option value="web_development">Web Development</option>
+                            <option value="data_science">Data Science</option>
+                            <option value="cybersecurity">Cybersecurity</option>
+                            <option value="robotics">Robotics</option>
                         </select>
                     </div>
                     <div>

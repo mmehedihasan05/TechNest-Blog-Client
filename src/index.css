@@ -93,11 +93,17 @@ h6,
 
 /* Login and Register Page Styles */
 /* Input field styling */
-form input._input {
+form input._input,
+form .searchFieldParent {
     color: var(--text-primary);
     padding: 6px 10px;
     border-radius: 6px;
     border: 1px solid var(--text-primary);
+}
+
+form .searchFieldParent [name="category"],
+form .searchFieldParent [name="category"]:focus {
+    border-left: 1px solid var(--text-primary);
 }
 
 form input._input:focus,
@@ -105,7 +111,10 @@ form .passwordParent:focus,
 form .passwordParent:focus-within,
 form [name="comment"]:focus,
 form textarea:focus,
-form select:focus {
+form select:focus,
+form input[name="searchTitle"]:focus,
+form [name="category"]:focus,
+form .searchFieldParent:focus-within {
     outline: 1px solid var(--text-primary);
     outline-offset: 0px;
     border-color: var(--text-primary);
@@ -124,7 +133,10 @@ form input._input[name="password"] {
     outline-offset: 0px;
     box-shadow: none;
 }
-form input._input[name="password"]:focus {
+
+form input._input[name="password"]:focus,
+form input[name="searchTitle"]:focus,
+form [name="category"]:focus {
     border: none;
     outline: none;
     outline-offset: 0px;

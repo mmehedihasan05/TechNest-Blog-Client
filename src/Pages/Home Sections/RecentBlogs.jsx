@@ -30,16 +30,15 @@ const RecentBlogs = () => {
     */
 
     useEffect(() => {
-        console.log("currentUser", currentUser);
-        if (currentUser === null || currentUser) {
-            axiosSecure
-                .get(`/recent-blogs?userid=${currentUser?.uid}`)
-                .then((data) => {
-                    setRecentBlogData(data.data);
-                    // setLoading(false);
-                })
-                .catch((error) => console.log(error));
-        }
+        const userId = localStorage.getItem("userId");
+
+        axiosSecure
+            .get(`/recent-blogs?userid=${userId}`)
+            .then((data) => {
+                setRecentBlogData(data.data);
+                // setLoading(false);
+            })
+            .catch((error) => console.log(error));
     }, [currentUser, wishlistUpdated]);
 
     return (
