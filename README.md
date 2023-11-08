@@ -1,30 +1,29 @@
-# React + Vite
+## Site Name : TechNest
 
-# Client Side Repo
+## Live Link: [https://a11-technest.web.app/](https://a11-technest.web.app/)
 
-https://github.com/Porgramming-Hero-web-course/b8a11-client-side-mmehedihasan05.git
+## ✔ Some Key features of this project
 
-# Server Side Repo
+1. **User Authentication**
 
-https://github.com/Porgramming-Hero-web-course/b8a11-server-side-mmehedihasan05
+-   Users can create an account using their email and password or log in with GitHub or Google.
+-   Logout functionality is available for signed-in users.
 
-//
-//
+2. **Stay Logged In**: Users remain logged in even after reloading the page.
 
-## Server Side Api Test
+3. **Password Validation**: There are some validtion for validating password. Which are :-
 
-https://a11-technest-backend.vercel.app/allblogs_temp
+-   Minimum of 6 characters
+-   At least one capital letter
+-   At least one special character
+-   At least one numeric character
 
-## firebase hosting
+4. **Private Routes**: Unauthorized users cannot access Add blog, Update Blog, Wishlist and add any post to bookmark.
 
-https://a11-technest.web.app
+5. **Blog Bookmark Feature**: Logged in users can bookmark blogs. Also users can see his/her bookmarked blogs.
 
-<!-- Submit -->
+6. **Blog Publish**: Logged in Users can publish blog.
 
-assignment_category_0006
+7. **Update Post**: Blog owner can update his/her published blog.
 
-Client Side Repository: https://github.com/Porgramming-Hero-web-course/b8a11-client-side-mmehedihasan05.git
-
-Server Side Repository: https://github.com/Porgramming-Hero-web-course/b8a11-server-side-mmehedihasan05
-
-Live Website: https://a11-technest.web.app
+8. **Comment Feature**: Logged in Users can comment on another blog but they cannot comment on their own blog post.
