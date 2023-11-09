@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useQuery } from "@tanstack/react-query";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../AuthProvider";
 import BlogCard from "../../Components/BlogCard";
@@ -24,10 +23,8 @@ const EditorsPick = () => {
     };
 
     useEffect(() => {
-        const userId = localStorage.getItem("userId");
-
         axiosSecure
-            .get(`/editors-pick?userid=${userId}`)
+            .get(`/editors-pick`)
             .then((data) => {
                 setRecentBlogData(data.data);
                 // setLoading(false);

@@ -11,7 +11,7 @@ export const OtherContext = createContext();
 
 const Root = () => {
     const axiosSecure = useAxiosSecure();
-    const { currentUser } = useContext(AuthContext);
+    const { currentUser, logout } = useContext(AuthContext);
 
     const [wishlistUpdated, setWishlistUpdated] = useState(true);
 
@@ -20,14 +20,15 @@ const Root = () => {
             toast.error("Login to bookmark!");
             return;
         }
-
+        const dataToPost = {
+            time: new Date().toISOString(),
+            blogId: blog_id,
+            userId: currentUser?.uid,
+            email: currentUser?.email,
+        };
         return toast.promise(
             axiosSecure
-                .patch("/addWishlist", {
-                    time: new Date().toISOString(),
-                    blogId: blog_id,
-                    userId: currentUser.uid,
-                })
+                .patch("/addWishlist", dataToPost)
                 .then((response) => {
                     if (response.data.acknowledged) {
                         setWishlistUpdated(!wishlistUpdated);
@@ -38,6 +39,16 @@ const Root = () => {
                 })
                 .catch((error) => {
                     console.log(error);
+                    if (error.response.status === 401 && currentUser) {
+                        logout()
+                            .then((response) => {
+                                toast.error("Unauthorized Access! Logged Out.");
+                            })
+                            .catch((error) => {
+                                toast.error("Unauthorized Access! Log Out Failed.");
+                            });
+                    }
+                    throw new Error("Failed to add to wishlist!");
                 }),
             {
                 loading: "Adding to wishlist...",
@@ -54,13 +65,16 @@ const Root = () => {
             return;
         }
 
+        const dataToPost = {
+            time: new Date().toISOString(),
+            blogId: blog_id,
+            userId: currentUser?.uid,
+            email: currentUser?.email,
+        };
+
         return toast.promise(
             axiosSecure
-                .patch("/removeWishlist", {
-                    time: new Date().toISOString(),
-                    blogId: blog_id,
-                    userId: currentUser.uid,
-                })
+                .patch("/removeWishlist", dataToPost)
                 .then((response) => {
                     // console.log(response.data);
 
@@ -73,6 +87,16 @@ const Root = () => {
                 })
                 .catch((error) => {
                     console.log(error);
+                    if (error.response.status === 401 && currentUser) {
+                        logout()
+                            .then((response) => {
+                                toast.error("Unauthorized Access! Logged Out.");
+                            })
+                            .catch((error) => {
+                                toast.error("Unauthorized Access! Log Out Failed.");
+                            });
+                    }
+                    throw new Error("Failed to remove from wishlist!");
                 }),
             {
                 loading: "Removing from wishlist...",

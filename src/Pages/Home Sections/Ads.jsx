@@ -12,7 +12,7 @@ const Ads = () => {
                         href="https://www.meta.com/quest/quest-3/"
                         className="space-y-3"
                     >
-                        <img src="/images/ads1.jpg" alt="" />
+                        <img src="/images/vr1.jpg" alt="" />
                         <p>Unwrap mixed reality with Meta Quest 3</p>
                     </a>
                 </div>
@@ -23,7 +23,7 @@ const Ads = () => {
                         href="https://www.startech.com.bd/sony-playstation-vr2"
                         className="space-y-3"
                     >
-                        <img src="/images/ads2.jpg" alt="" />
+                        <img src="/images/vr2.jpg" alt="" />
                         <p>Sony PlayStation VR2</p>
                     </a>
                 </div>

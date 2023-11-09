@@ -57,7 +57,7 @@ const Banner = () => {
                 }}
                 grabCursor={true}
                 autoplay={{
-                    delay: 2000,
+                    delay: 20000,
                     disableOnInteraction: false,
                 }}
                 navigation={true}

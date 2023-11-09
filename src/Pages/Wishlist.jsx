@@ -15,18 +15,14 @@ const Wishlist = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const userId = localStorage.getItem("userId");
-
         axiosSecure
-            .get(`/wishlist?userid=${userId}`)
+            .get(`/wishlist`)
             .then((data) => {
                 setwishlistBlogData(data.data);
                 setLoading(false);
             })
             .catch((error) => console.log(error));
     }, [currentUser, wishlistUpdated]);
-
-    // console.log(wishlistBlogData);
 
     return (
         <div className="space-y-8 custom-width">
@@ -48,6 +44,11 @@ const Wishlist = () => {
                 {wishlistBlogData.map((blogData, idx) => (
                     <BlogCard key={idx} blogData={blogData}></BlogCard>
                 ))}
+                {wishlistBlogData.length === 0 ? (
+                    <div className="text-[--text-highlight]">No wishlisted data to show!</div>
+                ) : (
+                    ""
+                )}
             </div>
         </div>
     );

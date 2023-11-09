@@ -134,30 +134,59 @@ const AuthProvider = ({ children }) => {
     };
 
     const logout = async () => {
-        return signOut(auth);
-
-        // return signOut(auth)
-        //     .then(() => {
-        //         axiosSecure
-        //             .post(`/logout`, { email: currentUser?.email }, { withCredentials: true })
-        //             .then((response) => {
-        //                 localStorage.removeItem("userId");
-        //                 localStorage.removeItem("userEmail");
-        //                 console.log("JWT || Logged Out Successfully ", response);
-        //             })
-        //             .catch((jwt_Error) => {
-        //                 console.log(
-        //                     "JWT || Log Out Failed",
-        //                     jwt_Error.response.data,
-        //                     jwt_Error.response.status
-        //                 );
-        //             });
-        //         // Sign-out successful.
-        //     })
-        //     .catch((error) => {
-        //         // An error happened.
-        //     });
+        return signOut(auth)
+            .then(() => {
+                axiosSecure
+                    .post(`/logout`, { email: currentUser?.email })
+                    .then((response) => {
+                        // toast.success("Account Logged out");
+                        console.log("JWT || Logged Out Successfully ", response);
+                    })
+                    .catch((jwt_Error) => {
+                        console.log(
+                            "JWT || Log Out Failed",
+                            jwt_Error.response.data,
+                            jwt_Error.response.status
+                        );
+                    });
+                // Sign-out successful.
+            })
+            .catch((error) => {
+                // An error happened.
+            });
     };
+
+    useEffect(() => {
+        const unSubscribe = onAuthStateChanged(auth, (user) => {
+            setLoading(false);
+            setCurrentUser(user);
+
+            const email = user?.email;
+            const userId = user?.uid;
+
+            console.log(user);
+            if (email) {
+                console.log("Logged in condition", { email, userId });
+
+                axiosSecure
+                    .post(`/authenticate`, { email, userId })
+                    .then((response) => console.log("JWT || Authentication Success", response))
+                    .catch((jwt_Error) => {
+                        // Logout
+                        // console.log(jwt_Error);
+                        console.log(
+                            "JWT || Authentication Failed",
+                            jwt_Error.response.data,
+                            jwt_Error.response.status
+                        );
+                    });
+            }
+        });
+
+        return () => {
+            unSubscribe();
+        };
+    }, []);
 
     const authentications = {
         userCreate,
@@ -175,26 +204,6 @@ const AuthProvider = ({ children }) => {
         theme,
         setTheme,
     };
-
-    useEffect(() => {
-        const unSubscribe = onAuthStateChanged(auth, (user) => {
-            setLoading(false);
-            setCurrentUser(user);
-
-            const email = user?.email;
-            if (email) {
-                localStorage.setItem("userId", user.uid);
-                localStorage.setItem("userEmail", user.email);
-            } else {
-                localStorage.removeItem("userId");
-                localStorage.removeItem("userEmail");
-            }
-        });
-
-        return () => {
-            unSubscribe();
-        };
-    }, []);
 
     return (
         <>

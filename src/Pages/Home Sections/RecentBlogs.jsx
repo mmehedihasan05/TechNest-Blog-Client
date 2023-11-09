@@ -1,8 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import ReactMarkdown from "react-markdown";
 import SectionTitle from "../../Components/SectionTitle";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import BlogCard from "../../Components/BlogCard";
 import { useContext, useEffect } from "react";
@@ -26,15 +23,9 @@ const RecentBlogs = () => {
         description: "Explore the most recent blog posts from our tech enthusiasts.",
     };
 
-    /*
-    currentUser === undefined hole skeleton show korbe
-    */
-
     useEffect(() => {
-        const userId = localStorage.getItem("userId");
-
         axiosSecure
-            .get(`/recent-blogs?userid=${userId}`)
+            .get(`/recent-blogs`)
             .then((data) => {
                 setRecentBlogData(data.data);
                 // setLoading(false);

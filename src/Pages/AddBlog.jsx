@@ -6,19 +6,7 @@ import useAxiosSecure from "../hooks/useAxiosSecure";
 
 const AddBlog = () => {
     const axiosSecure = useAxiosSecure();
-    /*
-        const {
-
-            bannerUrl,
-        title,
-        category,
-        shortDescription,
-        longDescription,
-
-        authorInfo: { name: authorName, imageUrl: authorImage, userId: authorUserId },
-    } = blogData;
-    */
-    const { currentUser } = useContext(AuthContext);
+    const { currentUser, logout } = useContext(AuthContext);
 
     const handleAddBlog = (e) => {
         e.preventDefault();
@@ -34,24 +22,27 @@ const AddBlog = () => {
         const currentDate = new Date();
         const isoString = currentDate.toISOString();
 
-        const blogData = {
-            bannerUrl,
-            title,
-            category,
-            shortDescription,
-            longDescription,
-            creationTime: isoString,
-            authorInfo: {
-                name: currentUser.displayName,
-                imageUrl: currentUser.photoURL,
-                userId: currentUser.uid,
+        const dataToPost = {
+            userId: currentUser?.uid,
+            email: currentUser?.email,
+            blogData: {
+                bannerUrl,
+                title,
+                category,
+                shortDescription,
+                longDescription,
+                creationTime: isoString,
+                authorInfo: {
+                    name: currentUser.displayName,
+                    imageUrl: currentUser.photoURL,
+                    userId: currentUser.uid,
+                },
             },
         };
-        // console.log(blogData);
 
         return toast.promise(
             axiosSecure
-                .post("/addBlog", blogData)
+                .post("/addBlog", dataToPost)
                 .then((response) => {
                     // console.log(response.data);
                     if (response.data.acknowledged) {
@@ -63,6 +54,16 @@ const AddBlog = () => {
                 })
                 .catch((error) => {
                     console.log(error);
+                    if (error.response.status === 401 && currentUser) {
+                        logout()
+                            .then((response) => {
+                                toast.error("Unauthorized Access! Logged Out.");
+                            })
+                            .catch((error) => {
+                                toast.error("Unauthorized Access! Log Out Failed.");
+                            });
+                    }
+                    throw new Error("Failed to publish blog!");
                 }),
             {
                 loading: "Publishing blog...",

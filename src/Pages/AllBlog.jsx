@@ -19,10 +19,8 @@ const AllBlog = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const userId = localStorage.getItem("userId");
-
         axiosSecure
-            .get(`/allblogs?userid=${userId}`)
+            .get(`/allblogs`)
             .then((data) => {
                 // console.log(data.data);
                 setBlogData(data.data);
@@ -43,14 +41,11 @@ const AllBlog = () => {
             category: form.category.value,
         };
 
-        const userId = localStorage.getItem("userId");
-
         axiosSecure
             .get(
-                `/filterblogs?userid=${userId}&searchTitle=${searchData.searchTitle}&category=${searchData.category}`
+                `/filterblogs?searchTitle=${searchData.searchTitle}&category=${searchData.category}`
             )
             .then((data) => {
-                // console.log(data.data);
                 setBlogData(data.data);
                 setSearchStage(true);
                 setLoading(false);

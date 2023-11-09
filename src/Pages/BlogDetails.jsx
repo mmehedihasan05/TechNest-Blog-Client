@@ -2,10 +2,11 @@
 /* eslint-disable no-undef */
 /* eslint-disable react-hooks/exhaustive-deps */
 import useAxiosSecure from "../hooks/useAxiosSecure";
-import { useQuery } from "@tanstack/react-query";
 import { NavLink, useParams } from "react-router-dom";
 import moment from "moment";
 import { BsBookmarkCheckFill, BsBookmarkCheck, BsFillPencilFill, BsPencil } from "react-icons/bs";
+import { MdOutlineModeComment, MdErrorOutline, MdError } from "react-icons/md";
+import { BiComment } from "react-icons/bi";
 import { useContext, useState } from "react";
 import { AuthContext } from "../AuthProvider";
 import { Tooltip } from "flowbite-react";
@@ -31,14 +32,9 @@ const BlogDetails = () => {
 
     // Blog data fetching
     useEffect(() => {
-        // console.log("currentUser", currentUser);
-
-        const userId = localStorage.getItem("userId");
-
         axiosSecure
-            .get(`/blogDetails/${blog_id}?userid=${userId}`)
+            .get(`/blogDetails/${blog_id}`)
             .then((data) => {
-                // console.log(data.data);
                 setBlogData(data.data);
                 // setLoading(false);
             })
@@ -51,7 +47,6 @@ const BlogDetails = () => {
             .get(`/comment-list/${blog_id}`)
             .then((data) => {
                 // console.log("comment data", data.data);
-                // data empty hoite pare
 
                 if (data.data.commentInfo) {
                     setCommentList(data.data.commentInfo);
@@ -99,6 +94,8 @@ const BlogDetails = () => {
 
         let commentData = {
             blog_id: blog_id,
+            userId: currentUser?.uid,
+            email: currentUser?.email,
             commentInfo: {
                 comment: form.comment.value,
                 commented_userName: currentUser.displayName,
@@ -120,6 +117,17 @@ const BlogDetails = () => {
                 })
                 .catch((error) => {
                     console.log(error);
+                    console.log(error);
+                    if (error.response.status === 401 && currentUser) {
+                        logout()
+                            .then((response) => {
+                                toast.error("Unauthorized Access! Logged Out.");
+                            })
+                            .catch((error) => {
+                                toast.error("Unauthorized Access! Log Out Failed.");
+                            });
+                    }
+                    throw new Error("Failed to post comment!");
                 }),
             {
                 loading: "Posting Comment...",
@@ -234,16 +242,20 @@ const BlogDetails = () => {
             <hr />
             {/* Comment */}
             <div className="space-y-4">
-                <div>
+                <div className="text-xl md:text-3xl font-bold flex items-center gap-2">
+                    <BiComment />
                     <h2 className="text-xl md:text-3xl font-bold">Comments</h2>
                 </div>
                 <hr />
                 <div>
                     {/* Comment or Warning to login */}
                     {!currentUser ? (
-                        <h3 className="text-xl md:text-2xl font-semibold text-[--text-highlight]">
-                            Please login to comment!
-                        </h3>
+                        <div className="flex items-center gap-2 text-xl md:text-2xl font-semibold text-[--text-highlight]">
+                            <MdError />
+                            <h3 className="text-xl md:text-2xl font-semibold text-[--text-highlight]">
+                                Please login to comment!
+                            </h3>
+                        </div>
                     ) : authorUserId === currentUser?.uid ? (
                         <h3 className="text-2xl font-semibold">Author cannot comment own post!</h3>
                     ) : (

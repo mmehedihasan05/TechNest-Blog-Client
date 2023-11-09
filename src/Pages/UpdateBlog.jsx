@@ -18,10 +18,8 @@ const UpdateBlog = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const userId = localStorage.getItem("userId");
-
         axiosSecure
-            .get(`/blogDetails/${blog_id}?userid=${userId}`)
+            .get(`/blogDetails/${blog_id}`)
             .then((data) => {
                 // console.log(data.data);
                 setBlogData(data.data);
@@ -31,7 +29,7 @@ const UpdateBlog = () => {
             .catch((error) => console.log(error));
     }, []);
 
-    const { currentUser } = useContext(AuthContext);
+    const { currentUser, logout } = useContext(AuthContext);
 
     const handleUpdateBlog = (e) => {
         e.preventDefault();
@@ -44,17 +42,21 @@ const UpdateBlog = () => {
         const shortDescription = form.shortDescription.value;
         const longDescription = form.longDescription.value;
 
-        const blogData = {
-            bannerUrl,
-            title,
-            category,
-            shortDescription,
-            longDescription,
+        const dataToPost = {
+            userId: currentUser?.uid,
+            email: currentUser?.email,
+            blogData: {
+                bannerUrl,
+                title,
+                category,
+                shortDescription,
+                longDescription,
+            },
         };
 
         return toast.promise(
             axiosSecure
-                .put(`/updateBlog/${blog_id}?userid=${currentUser?.uid}`, blogData)
+                .put(`/updateBlog/${blog_id}`, dataToPost)
                 .then((response) => {
                     // console.log(response.data);
                     if (response.data.acknowledged) {
@@ -67,9 +69,19 @@ const UpdateBlog = () => {
                 })
                 .catch((error) => {
                     console.log(error);
+                    if (error.response.status === 401 && currentUser) {
+                        logout()
+                            .then((response) => {
+                                toast.error("Unauthorized Access! Logged Out.");
+                            })
+                            .catch((error) => {
+                                toast.error("Unauthorized Access! Log Out Failed.");
+                            });
+                    }
+                    throw new Error("Failed to update blog!");
                 }),
             {
-                loading: "Publishing blog...",
+                loading: "Updating blog...",
                 success: (message) => message,
                 error: (error) => <b>Failed to update blog!</b>,
             }

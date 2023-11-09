@@ -43,7 +43,7 @@ const NavBar = () => {
             <div
                 className="bg-white title shadow-md rounded-sm
         flex items-center justify-between
-        py-2 px-2
+        py-5 lg:py-4 px-2
 "
             >
                 {/* Main Logo */}

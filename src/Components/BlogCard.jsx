@@ -2,8 +2,6 @@ import { Card } from "flowbite-react";
 import { BsBookmarkCheckFill, BsBookmarkCheck } from "react-icons/bs";
 import "../CssStyles/Buttons.css";
 import { NavLink } from "react-router-dom";
-import useAxiosSecure from "../hooks/useAxiosSecure";
-import { useMutation, useQuery } from "@tanstack/react-query";
 import moment from "moment";
 import { useContext } from "react";
 import { OtherContext } from "../Root";
