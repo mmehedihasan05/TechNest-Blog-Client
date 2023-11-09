@@ -1,10 +1,9 @@
 /* eslint-disable react/jsx-no-target-blank */
-import SectionTitle from "../../Components/SectionTitle";
 
-const Ads = () => {
+const Sponsored = () => {
     return (
         <div className="space-y-2">
-            <h3 className="text-xl text-center font-semibold">Advertisments</h3>
+            <h3 className="text-xl text-center font-semibold">Sponsored</h3>
             <div className="grid grid-cols-2 gap-4 lg:grid-cols-1 justify-center items-center">
                 <div className=" shadow-md p-4 rounded-md">
                     <a
@@ -32,4 +31,4 @@ const Ads = () => {
     );
 };
 
-export default Ads;
+export default Sponsored;

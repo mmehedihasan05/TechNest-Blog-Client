@@ -1,4 +1,4 @@
-import Ads from "./Home Sections/Ads";
+import Sponsored from "./Home Sections/Sponsored";
 import Banner from "./Home Sections/Banner";
 import Banner2 from "./Home Sections/Banner2";
 import EditorsPick from "./Home Sections/EditorsPick";
@@ -39,7 +39,7 @@ const Home = () => {
                     <div className="mt-8">{/* <ShowByCategories></ShowByCategories> */}</div>
 
                     <div className="mt-8">
-                        <Ads></Ads>
+                        <Sponsored></Sponsored>
                     </div>
                 </div>
             </div>

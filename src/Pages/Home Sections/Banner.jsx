@@ -5,10 +5,11 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-
 import "./Banner.css";
-
+import { useAnimate, stagger } from "framer-motion";
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
+
+import { motion } from "framer-motion";
 
 const Banner = () => {
     const bannerContent = [
@@ -47,7 +48,12 @@ const Banner = () => {
     ];
 
     return (
-        <div className="banner_ custom-width custom-width-nospace">
+        <motion.div
+            className="banner_ custom-width custom-width-nospace"
+            initial={{ opacity: 0, translateY: 500 }}
+            animate={{ opacity: 1, translateY: 0 }}
+            transition={{ duration: 0.8 }}
+        >
             <Swiper
                 slidesPerView={1}
                 spaceBetween={30}
@@ -57,7 +63,7 @@ const Banner = () => {
                 }}
                 grabCursor={true}
                 autoplay={{
-                    delay: 20000,
+                    delay: 2000,
                     disableOnInteraction: false,
                 }}
                 navigation={true}
@@ -92,7 +98,7 @@ const Banner = () => {
                     ))}
                 </div>
             </Swiper>
-        </div>
+        </motion.div>
     );
 };
 
