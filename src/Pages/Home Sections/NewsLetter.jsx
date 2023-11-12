@@ -1,6 +1,6 @@
 import SectionTitle from "../../Components/SectionTitle";
 
-import { Label, TextInput } from "flowbite-react";
+import { TextInput } from "flowbite-react";
 import { HiMail } from "react-icons/hi";
 import toast from "react-hot-toast";
 import { motion } from "framer-motion";

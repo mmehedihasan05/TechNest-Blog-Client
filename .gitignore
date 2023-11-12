@@ -29,3 +29,6 @@ dist-ssr
 temp.js
 tmpblogs.json
 steps.txt
+misc
+.gitignore
+Design Helpers

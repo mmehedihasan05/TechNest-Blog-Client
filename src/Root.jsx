@@ -14,6 +14,7 @@ const Root = () => {
     const { currentUser, logout } = useContext(AuthContext);
 
     const [wishlistUpdated, setWishlistUpdated] = useState(true);
+    const [updatedWishlistBlogId, setUpdatedWishlistBlogId] = useState(true);
 
     const addWishlist = (blog_id) => {
         if (!currentUser) {
@@ -31,6 +32,7 @@ const Root = () => {
                 .patch("/addWishlist", dataToPost)
                 .then((response) => {
                     if (response.data.acknowledged) {
+                        setUpdatedWishlistBlogId(blog_id);
                         setWishlistUpdated(!wishlistUpdated);
                         return <b>Blog added to wishlist.</b>;
                     } else {
@@ -79,6 +81,7 @@ const Root = () => {
                     // console.log(response.data);
 
                     if (response.data.acknowledged) {
+                        setUpdatedWishlistBlogId(blog_id);
                         setWishlistUpdated(!wishlistUpdated);
                         return <b>Blog removed from wishlist.</b>;
                     } else {
@@ -107,6 +110,7 @@ const Root = () => {
     };
 
     const functionalities = {
+        updatedWishlistBlogId,
         wishlistUpdated,
         addWishlist,
         removeWishlist,

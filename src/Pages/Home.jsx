@@ -33,10 +33,12 @@ const Home = () => {
 
                 {/* Right Side Small : 1 Part */}
                 <div className=" space-y-12">
+                    <div className="">
+                        <ShowByCategories></ShowByCategories>
+                    </div>
                     <div>
                         <NewsLetter></NewsLetter>
                     </div>
-                    <div className="mt-8">{/* <ShowByCategories></ShowByCategories> */}</div>
 
                     <div className="mt-8">
                         <Sponsored></Sponsored>

@@ -14,11 +14,11 @@ import Wishlist from "./Pages/Wishlist";
 import Login from "./Pages/Login";
 import Register from "./Pages/Register";
 
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import AuthProvider from "./AuthProvider";
 import BlogDetails from "./Pages/BlogDetails";
 import UpdateBlog from "./Pages/UpdateBlog";
 import PrivateRoute from "./PrivateRoute";
+import BlogsByCategory from "./Pages/BlogsByCategory";
 
 const router = createBrowserRouter([
     {
@@ -44,6 +44,10 @@ const router = createBrowserRouter([
                 ),
             },
             { path: "/allblogs", element: <AllBlog /> },
+            {
+                path: `/blogsbycategory/:categoryname`,
+                element: <BlogsByCategory />,
+            },
             { path: "/featuredblogs", element: <FeaturedBlogs /> },
             {
                 path: `/blogDetails/:blog_id`,
@@ -63,14 +67,30 @@ const router = createBrowserRouter([
     },
 ]);
 
-const queryClient = new QueryClient();
-
 ReactDOM.createRoot(document.getElementById("root")).render(
     <React.StrictMode>
-        <QueryClientProvider client={queryClient}>
-            <AuthProvider>
-                <RouterProvider router={router} />
-            </AuthProvider>
-        </QueryClientProvider>
+        <AuthProvider>
+            <RouterProvider router={router} />
+        </AuthProvider>
     </React.StrictMode>
 );
+
+/*
+
+* Top visited
+* Top posted
+* Like/Deslike
+* Top liked disliked
+* Users posted blogs
+* Show total comment of a blog.
+* Show total view
+	Top commentd Post
+Top Interactions
+Popular Discussions
+Discuss & Discover
+Popular Discussions
+
+
+Search field with multiple category choose.
+Short by new old
+*/

@@ -17,7 +17,6 @@ import { PhotoProvider, PhotoView } from "react-photo-view";
 import "react-photo-view/dist/react-photo-view.css";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-import { Button, Label, TextInput } from "flowbite-react";
 import toast from "react-hot-toast";
 import CommentCard from "../Components/CommentCard";
 

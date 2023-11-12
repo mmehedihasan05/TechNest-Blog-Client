@@ -1,4 +1,6 @@
-import { useContext } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useState } from "react";
+import { useContext, useEffect } from "react";
 import toast from "react-hot-toast";
 import { AuthContext } from "../AuthProvider";
 import SectionTitle from "../Components/SectionTitle";
@@ -6,7 +8,19 @@ import useAxiosSecure from "../hooks/useAxiosSecure";
 
 const AddBlog = () => {
     const axiosSecure = useAxiosSecure();
+    const [categories, setCategories] = useState({});
     const { currentUser, logout } = useContext(AuthContext);
+
+    useEffect(() => {
+        axiosSecure
+            .get(`/category-names`)
+            .then((data) => {
+                console.log(Object.keys(data.data));
+                setCategories(data.data);
+                // setLoading(false);
+            })
+            .catch((error) => console.log(error));
+    }, []);
 
     const handleAddBlog = (e) => {
         e.preventDefault();
@@ -105,11 +119,11 @@ const AddBlog = () => {
                     <div>
                         <div>Category</div>
                         <select name="category" id="" className="w-full cursor-pointer" required>
-                            <option value="artificial_intelligence">Artificial Intelligence</option>
-                            <option value="web_development">Web Development</option>
-                            <option value="data_science">Data Science</option>
-                            <option value="cybersecurity">Cybersecurity</option>
-                            <option value="robotics">Robotics</option>
+                            {Object.keys(categories).map((categoryName, idx) => (
+                                <option value={categories[categoryName]} key={idx}>
+                                    {categoryName}
+                                </option>
+                            ))}
                         </select>
                     </div>
                     <div>

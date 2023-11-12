@@ -8,42 +8,89 @@ import useAxiosSecure from "../hooks/useAxiosSecure";
 import { OtherContext } from "../Root";
 import "../CssStyles/Buttons.css";
 import SkeletorForCard from "../Components/SkeletorForCard";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+
+import Searchfield from "../Components/Searchfield";
+
 const AllBlog = () => {
+    const timingOrder = [
+        { title: "Earliest to Latest", value: "ascending" },
+        { title: "Latest to Earliest", value: "descending" },
+    ];
     const [blogData, setBlogData] = useState([]);
     const { currentUser } = useContext(AuthContext);
-    const { wishlistUpdated } = useContext(OtherContext);
+    const { updatedWishlistBlogId, wishlistUpdated } = useContext(OtherContext);
     const axiosSecure = useAxiosSecure();
-    const [categoryInputVal, setCategoryInputVal] = useState("all");
-    const [searchStage, setSearchStage] = useState(false);
-
+    const [searchStage, setSearchStage] = useState(true);
+    const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [sortTimeOrder, setSortTimeOrder] = useState(timingOrder[1].value);
+    const [currentSearchTitle, setCurrentSearchTitle] = useState("");
+    const [currentSelectedCategories, setCurrentSelectedCategories] = useState([]);
 
+    // Fetch all blogs
     useEffect(() => {
         axiosSecure
             .get(`/allblogs`)
             .then((data) => {
                 // console.log(data.data);
                 setBlogData(data.data);
-                setSearchStage(false);
+                // setSearchStage(false);
                 setLoading(false);
             })
             .catch((error) => console.log(error));
-    }, [currentUser, wishlistUpdated]);
+    }, [currentUser]);
 
-    const handleSearch = (e) => {
-        e.preventDefault();
-        setLoading(true);
+    useEffect(() => {
+        let tempBlogData = blogData.map((data) => {
+            if (data._id === updatedWishlistBlogId) {
+                data.wishlist = !data.wishlist;
+            }
 
-        const form = e.target;
+            return data;
+        });
 
-        const searchData = {
-            searchTitle: form.searchTitle.value.trim(),
-            category: form.category.value,
-        };
+        setBlogData(tempBlogData);
+    }, [updatedWishlistBlogId]);
+
+    // Fetching categories
+    useEffect(() => {
+        axiosSecure
+            .get(`/category-names`)
+            .then((data) => {
+                setCategories(data.data);
+                console.log(data.data);
+            })
+            .catch((error) => console.log(error));
+    }, []);
+
+    const handleSearch = (values) => {
+        // setLoading(true);
+
+        values.event && values.event.preventDefault();
+
+        let searchTitle;
+        let selectedCategories;
+        let sort_Date = values.sort_Date || sortTimeOrder;
+
+        if (values.searchTitle) {
+            searchTitle = values.searchTitle;
+            setCurrentSearchTitle(values.searchTitle);
+        } else {
+            searchTitle = currentSearchTitle;
+        }
+
+        if (values.selectedCategories) {
+            selectedCategories = values.selectedCategories.map((categories) => categories.value);
+            setCurrentSelectedCategories(selectedCategories);
+        } else {
+            selectedCategories = currentSelectedCategories;
+        }
 
         axiosSecure
             .get(
-                `/filterblogs?searchTitle=${searchData.searchTitle}&category=${searchData.category}`
+                `/filterblogs?searchTitle=${searchTitle}&categories=${selectedCategories}&sort_Date=${sort_Date}`
             )
             .then((data) => {
                 setBlogData(data.data);
@@ -53,8 +100,13 @@ const AllBlog = () => {
             .catch((error) => console.log(error));
     };
 
-    const handleCategoryChange = (e) => {
-        setCategoryInputVal(e.target.value);
+    const handleTimingOrderChange = () => {
+        let tempCurrentTimeOrder =
+            sortTimeOrder === "descending" ? timingOrder[0].value : timingOrder[1].value;
+
+        setSortTimeOrder(tempCurrentTimeOrder);
+
+        handleSearch({ sort_Date: tempCurrentTimeOrder });
     };
 
     return (
@@ -63,59 +115,40 @@ const AllBlog = () => {
 
             {/* Search and Filter */}
             <div>
-                <form action="" onSubmit={handleSearch}>
-                    <div className="flex flex-col md:flex-row gap-2">
-                        <div className="searchFieldParent w-ful md:w-[80%] flex">
-                            <input
-                                type="text"
-                                name="searchTitle"
-                                id=""
-                                className="w-full border-none bg-inherit"
-                                placeholder="Search By Title"
-                            />
-
-                            <select
-                                name="category"
-                                id=""
-                                className="cursor-pointer border-none  bg-inherit  text-sm md:text-base"
-                                value={categoryInputVal}
-                                onChange={handleCategoryChange}
-                            >
-                                <option value="all">All Category</option>
-
-                                <option value="artificial_intelligence">
-                                    Artificial Intelligence
-                                </option>
-                                <option value="web_development">Web Development</option>
-                                <option value="data_science">Data Science</option>
-                                <option value="cybersecurity">Cybersecurity</option>
-                                <option value="robotics">Robotics</option>
-                            </select>
-                        </div>
-
-                        <input
-                            type="submit"
-                            className="_btn _btn-secondary w-[20%]"
-                            value="Search"
-                        />
-                    </div>
-                </form>
+                <Searchfield handleSearch={handleSearch} categories={categories} />
             </div>
 
             <div className="space-y-4">
                 <div>
                     {searchStage && blogData.length > 0 ? (
-                        <h3 className="font-semibold text-2xl">Search Result:</h3>
-                    ) : (
-                        ""
-                    )}
-                    {searchStage && blogData.length === 0 ? (
-                        <h3 className="font-semibold text-2xl">No blog found by this search!</h3>
+                        <div className="flex justify-between">
+                            <div>
+                                <h3 className="font-semibold text-lg space-x-2">
+                                    <span>Search Result</span>
+                                    <span className="text-xs opacity-80">
+                                        ({blogData.length} blogs found)
+                                    </span>
+                                </h3>
+                            </div>
+                            <div className="flex gap-2 items-center">
+                                <h3 className="font-semibold text-base ">Sort by:</h3>
+                                <Select
+                                    labelId="demo-select-small-label"
+                                    id="demo-select-small"
+                                    value={sortTimeOrder}
+                                    onChange={handleTimingOrderChange}
+                                >
+                                    <MenuItem value="descending">Latest to Earliest</MenuItem>
+                                    <MenuItem value="ascending">Earliest to Latest</MenuItem>
+                                </Select>
+                            </div>
+                        </div>
                     ) : (
                         ""
                     )}
                 </div>
 
+                {/* Skeleton */}
                 {loading ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         <SkeletorForCard></SkeletorForCard>
@@ -134,6 +167,14 @@ const AllBlog = () => {
                     {blogData.map((blogData, idx) => (
                         <BlogCard key={idx} blogData={blogData}></BlogCard>
                     ))}
+
+                    {searchStage && blogData.length === 0 ? (
+                        <h3 className="font-semibold text-base text-center">
+                            No blog found by this search!
+                        </h3>
+                    ) : (
+                        ""
+                    )}
                 </div>
             </div>
         </div>

@@ -1,5 +1,5 @@
 import { Footer } from "flowbite-react";
-import { BsDribbble, BsFacebook, BsGithub, BsInstagram, BsTwitter } from "react-icons/bs";
+import { BsFacebook, BsGithub, BsInstagram, BsTwitter } from "react-icons/bs";
 import { NavLink } from "react-router-dom";
 
 const Footer_ = () => {

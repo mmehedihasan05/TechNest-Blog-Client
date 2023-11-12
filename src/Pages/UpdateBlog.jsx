@@ -16,6 +16,7 @@ const UpdateBlog = () => {
     const navigate = useNavigate();
     const [categoryInputVal, setCategoryInputVal] = useState("");
     const [loading, setLoading] = useState(true);
+    const [categories, setCategories] = useState({});
 
     useEffect(() => {
         axiosSecure
@@ -25,6 +26,16 @@ const UpdateBlog = () => {
                 setBlogData(data.data);
                 setCategoryInputVal(data.data?.category);
                 setLoading(false);
+            })
+            .catch((error) => console.log(error));
+    }, []);
+
+    // get category list
+    useEffect(() => {
+        axiosSecure
+            .get(`/category-names`)
+            .then((data) => {
+                setCategories(data.data);
             })
             .catch((error) => console.log(error));
     }, []);
@@ -143,13 +154,11 @@ const UpdateBlog = () => {
                                 value={categoryInputVal}
                                 onChange={handleCategoryChange}
                             >
-                                <option value="artificial_intelligence">
-                                    Artificial Intelligence
-                                </option>
-                                <option value="web_development">Web Development</option>
-                                <option value="data_science">Data Science</option>
-                                <option value="cybersecurity">Cybersecurity</option>
-                                <option value="robotics">Robotics</option>
+                                {Object.keys(categories).map((categoryName, idx) => (
+                                    <option value={categories[categoryName]} key={idx}>
+                                        {categoryName}
+                                    </option>
+                                ))}
                             </select>
                         </div>
                         <div>

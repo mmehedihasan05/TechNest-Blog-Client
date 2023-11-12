@@ -11,7 +11,7 @@ const useAxiosSecure = () => {
     const all = useContext(AuthContext);
 
     let axiosSecure = axios.create({
-        baseURL: "https://a11-technest-backend.vercel.app",
+        baseURL: "http://localhost:5000",
         withCredentials: true,
     });
 
@@ -28,7 +28,7 @@ const useAxiosSecure = () => {
                             toast.error("Unauthorized Access! Logged Out.");
                         })
                         .catch((error) => {
-                            toast.error("Unauthorized Access! Log Out Failed.");
+                            toast.error("Unauthorized Access!");
                         });
                 }
 

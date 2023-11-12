@@ -5,7 +5,6 @@ import { HiOutlineMenuAlt1 } from "react-icons/hi";
 import { RxCross1 } from "react-icons/rx";
 import { NavLink } from "react-router-dom";
 import { AuthContext } from "../AuthProvider";
-import { Dropdown } from "flowbite-react";
 import { GrLogout } from "react-icons/gr";
 
 const NavBar = () => {

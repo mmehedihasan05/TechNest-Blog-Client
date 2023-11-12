@@ -86,7 +86,6 @@ const Login = () => {
                                     placeholder="Email Address"
                                     name="email"
                                     className="_input"
-                                    defaultValue="abirhasan45@gmail.com"
                                     required
                                 />
 
@@ -96,7 +95,6 @@ const Login = () => {
                                         placeholder="Password"
                                         name="password"
                                         className="_input password"
-                                        defaultValue="sadsad##44S"
                                         required
                                     />
                                     <div className="text-2xl cursor-pointer place-self-center passwordEye">

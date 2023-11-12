@@ -3,7 +3,7 @@
 const Sponsored = () => {
     return (
         <div className="space-y-2">
-            <h3 className="text-xl text-center font-semibold">Sponsored</h3>
+            <h3 className="text-xl md:text-2xl text-center font-semibold">Ads</h3>
             <div className="grid grid-cols-2 gap-4 lg:grid-cols-1 justify-center items-center">
                 <div className=" shadow-md p-4 rounded-md">
                     <a
