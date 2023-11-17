@@ -7,7 +7,7 @@ import { BsFillArrowRightCircleFill } from "react-icons/bs";
 
 const ShowByCategories = () => {
     const axiosSecure = useAxiosSecure();
-    const [categories, setCategories] = useState({});
+    const [categories, setCategories] = useState([]);
 
     // get category list
     useEffect(() => {
@@ -26,16 +26,19 @@ const ShowByCategories = () => {
             ></SectionTitle>
             <div>
                 <ul className="flex flex-col gap-4">
-                    {Object.keys(categories).map((categoryName, idx) => (
-                        <li
-                            className="flex items-center gap-2 text-[--text-primary] font-medium hover:text-[--text-highlight] hover:font-semibold"
-                            value={categories[categoryName]}
-                            key={idx}
-                        >
-                            <BsFillArrowRightCircleFill></BsFillArrowRightCircleFill>
-                            <NavLink to={`/blogsbycategory/${categories[categoryName]}`}>
-                                {categoryName}
-                            </NavLink>
+                    {categories.map((category, idx) => (
+                        <li value={category.value} key={idx}>
+                            <div>
+                                <NavLink
+                                    to={`/blogsbycategory/${category.value}`}
+                                    className="flex items-center gap-2 text-[--text-primary] font-medium cursor-pointer
+                            hover:text-[--text-highlight] hover:font-semibold hover:pl-2
+                            transition-all"
+                                >
+                                    <BsFillArrowRightCircleFill></BsFillArrowRightCircleFill>
+                                    {category.title}
+                                </NavLink>
+                            </div>
                         </li>
                     ))}
                 </ul>

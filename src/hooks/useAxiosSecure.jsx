@@ -5,13 +5,14 @@ import { useContext, useEffect } from "react";
 import { AuthContext } from "../AuthProvider";
 
 // baseURL: "https://a11-technest-backend.vercel.app",
+// baseURL: "https://technest-blog-backend.vercel.app",
 // baseURL: "http://localhost:5000",
 
 const useAxiosSecure = () => {
     const all = useContext(AuthContext);
 
     let axiosSecure = axios.create({
-        baseURL: "http://localhost:5000",
+        baseURL: "https://technest-blog-backend.vercel.app",
         withCredentials: true,
     });
 

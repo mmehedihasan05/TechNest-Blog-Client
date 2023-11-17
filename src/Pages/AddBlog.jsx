@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState } from "react";
 import { useContext, useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 import toast from "react-hot-toast";
 import { AuthContext } from "../AuthProvider";
 import SectionTitle from "../Components/SectionTitle";
@@ -8,14 +9,13 @@ import useAxiosSecure from "../hooks/useAxiosSecure";
 
 const AddBlog = () => {
     const axiosSecure = useAxiosSecure();
-    const [categories, setCategories] = useState({});
+    const [categories, setCategories] = useState([]);
     const { currentUser, logout } = useContext(AuthContext);
 
     useEffect(() => {
         axiosSecure
             .get(`/category-names`)
             .then((data) => {
-                console.log(Object.keys(data.data));
                 setCategories(data.data);
                 // setLoading(false);
             })
@@ -119,9 +119,9 @@ const AddBlog = () => {
                     <div>
                         <div>Category</div>
                         <select name="category" id="" className="w-full cursor-pointer" required>
-                            {Object.keys(categories).map((categoryName, idx) => (
-                                <option value={categories[categoryName]} key={idx}>
-                                    {categoryName}
+                            {categories.map((category, idx) => (
+                                <option value={category.value} key={idx}>
+                                    {category.title}
                                 </option>
                             ))}
                         </select>
@@ -157,6 +157,10 @@ const AddBlog = () => {
                     </div>
                 </form>
             </div>
+
+            <Helmet>
+                <title>Write Blog - Technest</title>
+            </Helmet>
         </div>
     );
 };

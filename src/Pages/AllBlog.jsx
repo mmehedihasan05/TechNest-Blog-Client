@@ -12,6 +12,7 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 
 import Searchfield from "../Components/Searchfield";
+import { Helmet } from "react-helmet-async";
 
 const AllBlog = () => {
     const timingOrder = [
@@ -177,6 +178,10 @@ const AllBlog = () => {
                     )}
                 </div>
             </div>
+
+            <Helmet>
+                <title>All Blog - Technest</title>
+            </Helmet>
         </div>
     );
 };

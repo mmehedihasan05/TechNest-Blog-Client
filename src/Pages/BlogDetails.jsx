@@ -19,6 +19,7 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import toast from "react-hot-toast";
 import CommentCard from "../Components/CommentCard";
+import { Helmet } from "react-helmet-async";
 
 const BlogDetails = () => {
     const { blog_id } = useParams();
@@ -287,6 +288,10 @@ const BlogDetails = () => {
                     ))}
                 </div>
             </div>
+
+            <Helmet>
+                <title>{title} - Technest</title>
+            </Helmet>
         </div>
     );
 };

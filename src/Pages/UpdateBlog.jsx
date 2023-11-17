@@ -8,6 +8,7 @@ import useAxiosSecure from "../hooks/useAxiosSecure";
 import { categoryFormatter } from "../Utilities/Functionalities";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import { Helmet } from "react-helmet-async";
 
 const UpdateBlog = () => {
     const { blog_id } = useParams();
@@ -195,6 +196,9 @@ const UpdateBlog = () => {
                     </form>
                 </div>
             )}
+            <Helmet>
+                <title>Update Blog - Technest</title>
+            </Helmet>
         </div>
     );
 };

@@ -223,3 +223,19 @@ form .passwordEye {
     padding-top: 4px;
     padding-bottom: 4px;
 }
+
+/* React Recaptcha Reload icon */
+#captchaShow > div {
+    display: flex;
+    column-gap: 8px;
+    align-items: center;
+}
+#reload_href::before {
+    content: "";
+    display: block;
+    background: url("/reloadIcon.png") no-repeat;
+    width: 20px;
+    height: 20px;
+    float: left;
+    margin: 0 6px 0 0;
+}

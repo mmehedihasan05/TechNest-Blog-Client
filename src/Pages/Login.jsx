@@ -5,6 +5,7 @@ import { AuthContext } from "../AuthProvider";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import Authentication_3rdParty from "../Components/Authentication_3rdParty";
 import SectionTitle from "../Components/SectionTitle";
+import { Helmet } from "react-helmet-async";
 
 /* eslint-disable react/no-unescaped-entities */
 const Login = () => {
@@ -81,6 +82,7 @@ const Login = () => {
                                 className="contactFormParent 
                         flex flex-col gap-6"
                             >
+                                {/* email */}
                                 <input
                                     type="email"
                                     placeholder="Email Address"
@@ -89,6 +91,7 @@ const Login = () => {
                                     required
                                 />
 
+                                {/* password */}
                                 <div className="passwordParent">
                                     <input
                                         type={showPassword ? "text" : "password"}
@@ -133,6 +136,10 @@ const Login = () => {
                     </div>
                 </div>
             </div>
+
+            <Helmet>
+                <title>Login - Technest</title>
+            </Helmet>
         </div>
     );
 };

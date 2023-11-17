@@ -5,6 +5,7 @@ import SectionTitle from "../Components/SectionTitle";
 import useAxiosSecure from "../hooks/useAxiosSecure";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import { Helmet } from "react-helmet-async";
 const FeaturedBlogs = () => {
     const axiosSecure = useAxiosSecure();
     const [featuredBlogData, setFeaturedBlogData] = useState([]);
@@ -73,6 +74,10 @@ const FeaturedBlogs = () => {
                     <DataTable columns={columns} data={featuredBlogData} className="text-xl" />
                 </div>
             )}
+
+            <Helmet>
+                <title>Featured Blog - Technest</title>
+            </Helmet>
         </div>
     );
 };

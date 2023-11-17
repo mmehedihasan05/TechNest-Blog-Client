@@ -7,6 +7,7 @@ import { categoryFormatter } from "../Utilities/Functionalities";
 import BlogCard from "../Components/BlogCard";
 import SkeletorForCard from "../Components/SkeletorForCard";
 import { OtherContext } from "../Root";
+import { Helmet } from "react-helmet-async";
 
 const BlogsByCategory = () => {
     const axiosSecure = useAxiosSecure();
@@ -56,6 +57,10 @@ const BlogsByCategory = () => {
                     ))}
                 </div>
             </div>
+
+            <Helmet>
+                <title>{categoryFormatter(categoryname)} Blogs - Technest</title>
+            </Helmet>
         </div>
     );
 };

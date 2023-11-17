@@ -1,12 +1,20 @@
 /* eslint-disable no-useless-escape */
 /* eslint-disable react/no-unescaped-entities */
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, Navigate, useLocation } from "react-router-dom";
 import { AuthContext } from "../AuthProvider";
 import Authentication_3rdParty from "../Components/Authentication_3rdParty";
 import SectionTitle from "../Components/SectionTitle";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import toast from "react-hot-toast";
+import { Helmet } from "react-helmet-async";
+import {
+    loadCaptchaEnginge,
+    LoadCanvasTemplate,
+    LoadCanvasTemplateNoReload,
+    validateCaptcha,
+} from "react-simple-captcha";
+import { TfiReload } from "react-icons/tfi";
 
 const Register = () => {
     const [showPassword, setShowPassword] = useState(false);
@@ -15,6 +23,10 @@ const Register = () => {
     const { userCreate, currentUser } = useContext(AuthContext);
 
     const location = useLocation();
+
+    useEffect(() => {
+        loadCaptchaEnginge(6, "#eeeefe");
+    }, []);
 
     if (currentUser?.email && location?.state) {
         return <Navigate to={location.state} />;
@@ -25,6 +37,12 @@ const Register = () => {
     const handleUserCreate_emailPass = (e) => {
         e.preventDefault();
         setError("");
+
+        if (!validateCaptcha(e.target.captcha.value)) {
+            toast.error("Captcha is not matched!");
+            setError("Captcha is not matched!");
+            return "";
+        }
 
         // Getting data from Form
         let data = {
@@ -102,7 +120,7 @@ const Register = () => {
                         </div>
                     </div>
 
-                    {/* Login Form */}
+                    {/* Register Form */}
                     <div
                         className="col-span-2 rounded-lg md:rounded-none md:rounded-r-lg space-y-2
                     flex flex-col items-center justify-evenly py-4 px-4
@@ -119,6 +137,7 @@ const Register = () => {
                                 className="contactFormParent w-full 
                         flex flex-col gap-6"
                             >
+                                {/* Full Name */}
                                 <input
                                     type="text"
                                     placeholder="Full Name"
@@ -127,6 +146,7 @@ const Register = () => {
                                     required
                                 />
 
+                                {/* Image Link */}
                                 <input
                                     type="text"
                                     placeholder="Profile Image URL"
@@ -135,6 +155,7 @@ const Register = () => {
                                     required
                                 />
 
+                                {/* Email */}
                                 <input
                                     type="email"
                                     placeholder="Email Address"
@@ -143,6 +164,7 @@ const Register = () => {
                                     required
                                 />
 
+                                {/* password */}
                                 <div className="passwordParent">
                                     <input
                                         type={showPassword ? "text" : "password"}
@@ -161,6 +183,22 @@ const Register = () => {
                                                 onClick={() => setShowPassword(!showPassword)}
                                             ></AiFillEyeInvisible>
                                         )}
+                                    </div>
+                                </div>
+
+                                {/* Captcha */}
+                                <div className="flex items-center gap-2">
+                                    <div>
+                                        <input
+                                            type="text"
+                                            placeholder="Captcha"
+                                            name="captcha"
+                                            className="_input"
+                                            required
+                                        />
+                                    </div>
+                                    <div id="captchaShow" className="">
+                                        <LoadCanvasTemplate reloadText=" " reloadColor="#454360" />
                                     </div>
                                 </div>
 
@@ -191,6 +229,10 @@ const Register = () => {
                     </div>
                 </div>
             </div>
+
+            <Helmet>
+                <title>Register - Technest</title>
+            </Helmet>
         </div>
     );
 };

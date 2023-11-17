@@ -7,6 +7,7 @@ import SkeletorForCard from "../Components/SkeletorForCard";
 import useAxiosSecure from "../hooks/useAxiosSecure";
 import { OtherContext } from "../Root";
 import { MdError } from "react-icons/md";
+import { Helmet } from "react-helmet-async";
 const Wishlist = () => {
     const axiosSecure = useAxiosSecure();
     const { currentUser } = useContext(AuthContext);
@@ -53,6 +54,10 @@ const Wishlist = () => {
                     ""
                 )}
             </div>
+
+            <Helmet>
+                <title>Wishlists - Technest</title>
+            </Helmet>
         </div>
     );
 };

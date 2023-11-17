@@ -5,6 +5,7 @@ import EditorsPick from "./Home Sections/EditorsPick";
 import NewsLetter from "./Home Sections/NewsLetter";
 import RecentBlogs from "./Home Sections/RecentBlogs";
 import ShowByCategories from "./Home Sections/ShowByCategories";
+import { Helmet } from "react-helmet-async";
 
 /*
 
@@ -45,6 +46,10 @@ const Home = () => {
                     </div>
                 </div>
             </div>
+
+            <Helmet>
+                <title>Technest</title>
+            </Helmet>
         </div>
     );
 };
