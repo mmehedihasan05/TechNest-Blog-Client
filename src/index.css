@@ -74,20 +74,6 @@ h6,
     padding: 0px;
 }
 
-/* Mobile Nav Drowdown */
-.mobileNav {
-    transition: all 0.25s;
-    position: absolute;
-    top: 70px;
-}
-.mobileNav.show {
-    left: 12px;
-}
-
-.mobileNav.hide {
-    left: -180px;
-}
-
 #bannerTest {
     background-size: cover;
 }

@@ -20,6 +20,19 @@ import BlogDetails from "./Pages/BlogDetails";
 import UpdateBlog from "./Pages/UpdateBlog";
 import PrivateRoute from "./PrivateRoute";
 import BlogsByCategory from "./Pages/BlogsByCategory";
+import Authentications from "./Pages/Authentications";
+
+import {
+    useQuery,
+    useMutation,
+    useQueryClient,
+    QueryClient,
+    QueryClientProvider,
+} from "@tanstack/react-query";
+import Dashboard from "./Pages/Dashboard";
+import Profile from "./Pages/Profile";
+
+const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
     {
@@ -64,17 +77,28 @@ const router = createBrowserRouter([
             },
             { path: "/login", element: <Login /> },
             { path: "/register", element: <Register /> },
+            { path: "/authentications", element: <Authentications /> },
+
+            { path: "/profile", element: <Profile /> },
         ],
+    },
+    {
+        path: "dashboard",
+        element: <Dashboard />,
+        errorElement: <ErrorPage />,
+        children: [],
     },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
     <React.StrictMode>
-        <HelmetProvider>
-            <AuthProvider>
-                <RouterProvider router={router} />
-            </AuthProvider>
-        </HelmetProvider>
+        <QueryClientProvider client={queryClient}>
+            <HelmetProvider>
+                <AuthProvider>
+                    <RouterProvider router={router} />
+                </AuthProvider>
+            </HelmetProvider>
+        </QueryClientProvider>
     </React.StrictMode>
 );
 

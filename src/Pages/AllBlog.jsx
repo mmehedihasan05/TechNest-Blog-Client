@@ -14,6 +14,8 @@ import MenuItem from "@mui/material/MenuItem";
 import Searchfield from "../Components/Searchfield";
 import { Helmet } from "react-helmet-async";
 
+import { useQuery } from "@tanstack/react-query";
+
 const AllBlog = () => {
     const timingOrder = [
         { title: "Earliest to Latest", value: "ascending" },
@@ -25,13 +27,28 @@ const AllBlog = () => {
     const axiosSecure = useAxiosSecure();
     const [searchStage, setSearchStage] = useState(true);
     const [categories, setCategories] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [sortTimeOrder, setSortTimeOrder] = useState(timingOrder[1].value);
     const [currentSearchTitle, setCurrentSearchTitle] = useState("");
     const [currentSelectedCategories, setCurrentSelectedCategories] = useState([]);
 
+    console.log(currentUser);
+    const { data: allBlogsData = [] } = useQuery({
+        queryKey: ["allblogs", currentUser?.uid],
+        queryFn: async () => {
+            const res = await axiosSecure.get(
+                `/allblogs?email=${currentUser?.email}&userId=${currentUser?.uid}`
+            );
+
+            return res.data;
+        },
+    });
+
+    console.log("from query ", allBlogsData);
+
     // Fetch all blogs
     useEffect(() => {
+        return;
         axiosSecure
             .get(`/allblogs`)
             .then((data) => {
@@ -120,6 +137,7 @@ const AllBlog = () => {
             </div>
 
             <div className="space-y-4">
+                {/* Is the results from search on not! */}
                 <div>
                     {searchStage && blogData.length > 0 ? (
                         <div className="flex justify-between">
@@ -165,7 +183,7 @@ const AllBlog = () => {
 
                 {/* All blogs */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {blogData.map((blogData, idx) => (
+                    {allBlogsData.map((blogData, idx) => (
                         <BlogCard key={idx} blogData={blogData}></BlogCard>
                     ))}
 

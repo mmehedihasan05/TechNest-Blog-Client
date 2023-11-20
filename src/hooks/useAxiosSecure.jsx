@@ -45,4 +45,16 @@ const useAxiosSecure = () => {
     return axiosSecure;
 };
 
-export default useAxiosSecure;
+// export default useAxiosSecure;
+
+const axiosSecure = axios.create({
+    baseURL: "http://localhost:5000",
+    withCredentials: true,
+});
+
+const useAxiosSecureNew = () => {
+    console.log("me");
+    return axiosSecure;
+};
+
+export default useAxiosSecureNew;

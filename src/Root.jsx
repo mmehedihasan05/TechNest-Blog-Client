@@ -21,12 +21,14 @@ const Root = () => {
             toast.error("Login to bookmark!");
             return;
         }
+
         const dataToPost = {
             time: new Date().toISOString(),
             blogId: blog_id,
             userId: currentUser?.uid,
             email: currentUser?.email,
         };
+
         return toast.promise(
             axiosSecure
                 .patch("/addWishlist", dataToPost)
@@ -117,11 +119,19 @@ const Root = () => {
     };
 
     return (
-        <div id="appRoot" className="pt-4 space-y-8">
+        <div id="appRoot" className="">
             <OtherContext.Provider value={functionalities}>
-                <NavBar></NavBar>
-                <Outlet></Outlet>
-                <Footer></Footer>
+                <div className="min-h-screen flex flex-col gap-y-8">
+                    <div>
+                        <NavBar></NavBar>
+                    </div>
+                    <div>
+                        <Outlet></Outlet>
+                    </div>
+                    <div className="mt-auto">
+                        <Footer></Footer>
+                    </div>
+                </div>
                 <Toaster position="top-center" reverseOrder={false} />
             </OtherContext.Provider>
         </div>

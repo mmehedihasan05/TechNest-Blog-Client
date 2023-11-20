@@ -67,7 +67,7 @@ const Banner = () => {
                     disableOnInteraction: false,
                 }}
                 navigation={true}
-                modules={[Autoplay, Pagination, Navigation]}
+                modules={[Pagination, Navigation]}
                 className="mySwiper rounded-lg"
             >
                 <div>
