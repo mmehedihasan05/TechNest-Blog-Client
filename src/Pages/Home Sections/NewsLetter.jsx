@@ -7,7 +7,8 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 const NewsLetter = () => {
     const [email_, setEmail_] = useState("");
-    const handleSubscribe = () => {
+    const handleSubscribe = (e) => {
+        e.preventDefault();
         if (email_ === "") {
             toast.error("Type your email first");
         } else {
@@ -39,15 +40,7 @@ const NewsLetter = () => {
                     />
                 </div>
                 <div className="flex justify-center">
-                    <motion.div
-                        className="box px-4 py-2 rounded-md cursor-pointer bg-[--btn-secondary-bg] text-[--btn-secondary-text] w-fit mx-auto"
-                        whileHover={{ scale: 1.2 }}
-                        whileTap={{ scale: 0.9 }}
-                        transition={{ type: "spring", stiffness: 400, damping: 17 }}
-                        onClick={handleSubscribe}
-                    >
-                        Subscribe
-                    </motion.div>
+                    <button className="_btn _btn-secondary">Subscribe</button>
                 </div>
             </form>
         </div>

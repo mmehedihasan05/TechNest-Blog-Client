@@ -19,19 +19,15 @@ const Searchfield = ({ handleSearch, categories }) => {
         } else {
             setLabel("Showing from all categories");
         }
-
-        console.log(selectedCategories);
     }, [selectedCategories]);
+
+    const handleSearchSubmit = (event) => {
+        handleSearch({ event, searchTitle, selectedCategories });
+    };
 
     return (
         <div>
-            <form
-                action=""
-                onSubmit={(event) => {
-                    handleSearch({ event, searchTitle, selectedCategories });
-                }}
-                className="allBlogs-search "
-            >
+            <form action="" onSubmit={handleSearchSubmit} className="allBlogs-search ">
                 <div className="flex flex-col gap-4">
                     <TextField
                         id="outlined-search"

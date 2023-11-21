@@ -8,6 +8,7 @@
     border-radius: 4px;
 
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 10;
 }
 
 #navbar .arrowOnNav {
@@ -59,4 +60,25 @@
 
 #navbar .dropdown_profileItems .arrowOnNav {
     right: 3px;
+}
+
+/* absolute top-0 left-0 h-full w-full bg-[#34324e20]  */
+#navbar #fullScreenOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #4b4870;
+    transition: opacity 0.25s;
+}
+
+#navbar #fullScreenOverlay.show {
+    height: 100%;
+    width: 100%;
+    opacity: 0.2;
+    z-index: 9;
+}
+#navbar #fullScreenOverlay.hide {
+    height: 0;
+    width: 0;
+    opacity: 0;
 }

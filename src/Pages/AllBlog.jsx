@@ -23,43 +23,24 @@ const AllBlog = () => {
     ];
     const [blogData, setBlogData] = useState([]);
     const { currentUser } = useContext(AuthContext);
-    const { updatedWishlistBlogId, wishlistUpdated } = useContext(OtherContext);
+    const { updatedWishlistBlogId } = useContext(OtherContext);
     const axiosSecure = useAxiosSecure();
-    const [searchStage, setSearchStage] = useState(true);
     const [categories, setCategories] = useState([]);
-    const [loading, setLoading] = useState(false);
     const [sortTimeOrder, setSortTimeOrder] = useState(timingOrder[1].value);
-    const [currentSearchTitle, setCurrentSearchTitle] = useState("");
-    const [currentSelectedCategories, setCurrentSelectedCategories] = useState([]);
 
-    console.log(currentUser);
-    const { data: allBlogsData = [] } = useQuery({
-        queryKey: ["allblogs", currentUser?.uid],
+    const [searchUrl, setSearchUrl] = useState(
+        `/allblogs?email=${currentUser?.email}&userId=${currentUser?.uid}`
+    );
+
+    const { data: blogsData, isLoading } = useQuery({
+        queryKey: ["allblogs", currentUser?.uid, searchUrl],
         queryFn: async () => {
-            const res = await axiosSecure.get(
-                `/allblogs?email=${currentUser?.email}&userId=${currentUser?.uid}`
-            );
-
+            const res = await axiosSecure.get(searchUrl);
             return res.data;
         },
     });
 
-    console.log("from query ", allBlogsData);
-
-    // Fetch all blogs
-    useEffect(() => {
-        return;
-        axiosSecure
-            .get(`/allblogs`)
-            .then((data) => {
-                // console.log(data.data);
-                setBlogData(data.data);
-                // setSearchStage(false);
-                setLoading(false);
-            })
-            .catch((error) => console.log(error));
-    }, [currentUser]);
-
+    // When updatedWishlistBlogId changes, it reverse the wishlist status of that blog
     useEffect(() => {
         let tempBlogData = blogData.map((data) => {
             if (data._id === updatedWishlistBlogId) {
@@ -84,47 +65,35 @@ const AllBlog = () => {
     }, []);
 
     const handleSearch = (values) => {
-        // setLoading(true);
-
         values.event && values.event.preventDefault();
 
-        let searchTitle;
-        let selectedCategories;
+        let searchTitle = values.searchTitle;
+        let selectedCategories = values.selectedCategories.map((categories) => categories.value);
         let sort_Date = values.sort_Date || sortTimeOrder;
 
-        if (values.searchTitle) {
-            searchTitle = values.searchTitle;
-            setCurrentSearchTitle(values.searchTitle);
-        } else {
-            searchTitle = currentSearchTitle;
-        }
+        let searchQueries = `&sort_Date=${sort_Date}`;
 
-        if (values.selectedCategories) {
-            selectedCategories = values.selectedCategories.map((categories) => categories.value);
-            setCurrentSelectedCategories(selectedCategories);
-        } else {
-            selectedCategories = currentSelectedCategories;
-        }
+        searchTitle && (searchQueries += `&searchTitle=${searchTitle}`);
+        selectedCategories.length !== 0 && (searchQueries += `&categories=${selectedCategories}`);
 
-        axiosSecure
-            .get(
-                `/filterblogs?searchTitle=${searchTitle}&categories=${selectedCategories}&sort_Date=${sort_Date}`
-            )
-            .then((data) => {
-                setBlogData(data.data);
-                setSearchStage(true);
-                setLoading(false);
-            })
-            .catch((error) => console.log(error));
+        setSearchUrl(
+            `/allblogs?email=${currentUser?.email}&userId=${currentUser?.uid}${searchQueries}`
+        );
     };
 
     const handleTimingOrderChange = () => {
         let tempCurrentTimeOrder =
             sortTimeOrder === "descending" ? timingOrder[0].value : timingOrder[1].value;
-
         setSortTimeOrder(tempCurrentTimeOrder);
 
-        handleSearch({ sort_Date: tempCurrentTimeOrder });
+        const url = new URL("https://example.com" + searchUrl);
+
+        url.searchParams.set("sort_Date", tempCurrentTimeOrder);
+
+        let modifiedUrl = url.toString();
+        modifiedUrl = modifiedUrl.replace("https://example.com", "");
+
+        setSearchUrl(modifiedUrl);
     };
 
     return (
@@ -138,37 +107,33 @@ const AllBlog = () => {
 
             <div className="space-y-4">
                 {/* Is the results from search on not! */}
-                <div>
-                    {searchStage && blogData.length > 0 ? (
-                        <div className="flex justify-between">
-                            <div>
-                                <h3 className="font-semibold text-lg space-x-2">
-                                    <span>Search Result</span>
-                                    <span className="text-xs opacity-80">
-                                        ({blogData.length} blogs found)
-                                    </span>
-                                </h3>
-                            </div>
-                            <div className="flex gap-2 items-center">
-                                <h3 className="font-semibold text-base ">Sort by:</h3>
-                                <Select
-                                    labelId="demo-select-small-label"
-                                    id="demo-select-small"
-                                    value={sortTimeOrder}
-                                    onChange={handleTimingOrderChange}
-                                >
-                                    <MenuItem value="descending">Latest to Earliest</MenuItem>
-                                    <MenuItem value="ascending">Earliest to Latest</MenuItem>
-                                </Select>
-                            </div>
-                        </div>
-                    ) : (
-                        ""
-                    )}
+                <div className="flex justify-between">
+                    <div>
+                        <h3 className="font-semibold text-lg space-x-2">
+                            <span>Blogs</span>
+                            <span className="text-xs opacity-80">
+                                {blogsData?.allBlogs &&
+                                    `(${blogsData?.allBlogs.length} blogs found)`}
+                            </span>
+                        </h3>
+                    </div>
+
+                    <div className="flex gap-2 items-center">
+                        <h3 className="font-semibold text-base ">Sort by:</h3>
+                        <Select
+                            labelId="demo-select-small-label"
+                            id="demo-select-small"
+                            value={sortTimeOrder}
+                            onChange={handleTimingOrderChange}
+                        >
+                            <MenuItem value="descending">Latest to Earliest</MenuItem>
+                            <MenuItem value="ascending">Earliest to Latest</MenuItem>
+                        </Select>
+                    </div>
                 </div>
 
                 {/* Skeleton */}
-                {loading ? (
+                {isLoading ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         <SkeletorForCard></SkeletorForCard>
                         <SkeletorForCard></SkeletorForCard>
@@ -183,11 +148,13 @@ const AllBlog = () => {
 
                 {/* All blogs */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {allBlogsData.map((blogData, idx) => (
-                        <BlogCard key={idx} blogData={blogData}></BlogCard>
-                    ))}
+                    {blogsData?.allBlogs
+                        ? blogsData.allBlogs.map((blogData, idx) => (
+                              <BlogCard key={idx} blogData={blogData}></BlogCard>
+                          ))
+                        : ""}
 
-                    {searchStage && blogData.length === 0 ? (
+                    {blogsData?.searchedBlogs && blogsData?.allBlogs.length === 0 ? (
                         <h3 className="font-semibold text-base text-center">
                             No blog found by this search!
                         </h3>

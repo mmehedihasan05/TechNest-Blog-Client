@@ -14,7 +14,7 @@
         /* ... */
     }
 }
-#appRoot {
+#root {
     --text-primary: #454360;
     --text-secondary: #596172;
     --text-highlight: #ff4c60;
@@ -35,7 +35,7 @@
     -tw-ring-color: red;
 }
 
-#appRoot {
+#root {
     background-color: var(--bg-lite);
     min-height: 100vh;
     color: var(--text-secondary);

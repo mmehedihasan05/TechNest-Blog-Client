@@ -34,6 +34,20 @@ const NavBar = () => {
         { path: "/dashboard", name: "Dashboard" },
     ];
 
+    // const route_common = [];
+    const route_admin = [
+        { path: "/profile", name: "Profile" },
+        { path: "/dashboard", name: "Dashboard" },
+        { path: "/myBlogs", name: "My Blogs" },
+        { path: "/settings", name: "Settings" },
+        { path: "/membership", name: "Become a Member" },
+    ];
+    const route_normalUser = [
+        { path: "/profile", name: "Profile" },
+        { path: "/myBlogs", name: "My Blogs" },
+        { path: "/settings", name: "Settings" },
+    ];
+
     const handleLogout = () => {
         logout()
             .then((response) => {})
@@ -47,12 +61,12 @@ const NavBar = () => {
     };
 
     return (
-        <div id="navbar" className="bg-white shadow-md">
+        <div id="navbar" className="bg-white shadow-md ">
             <div
                 className="title rounded-sm
         flex items-center justify-between
         py-5 lg:py-4 px-2
-        custom-width"
+        custom-width relative"
             >
                 {/* Main Logo + Menu open close */}
                 <div className="flex items-center gap-2 md:gap-4 menuFirst">
@@ -136,9 +150,9 @@ const NavBar = () => {
                     className={
                         profileItem_dropdownShow
                             ? `dropdown dropdown_profileItems show
-                            block lg:hidden bg-white shadow-lg rounded-sm z-10`
+                            bg-white shadow-lg rounded-sm z-10`
                             : `dropdown dropdown_profileItems hide
-                            block lg:hidden bg-white shadow-lg rounded-sm z-10`
+                            bg-white shadow-lg rounded-sm z-10`
                     }
                 >
                     {/* up arrow */}
@@ -146,6 +160,7 @@ const NavBar = () => {
 
                     {/* Dropdown Menu Data */}
                     <ul className="flex flex-col px-6 py-4 gap-6 justify-center font-semibold">
+                        {/* User image, name, role */}
                         <li className="flex gap-4 items-center">
                             <img
                                 src={currentUser?.photoURL || "/no_user.png"}
@@ -160,7 +175,9 @@ const NavBar = () => {
                             </div>
                         </li>
                         <hr />
-                        {routes_profileItems.map((route, idx) => (
+
+                        {/* User Routes */}
+                        {route_admin.map((route, idx) => (
                             <li key={idx}>
                                 <NavLink
                                     className={({ isActive, isPending }) =>
@@ -177,6 +194,7 @@ const NavBar = () => {
                         ))}
                         <hr />
 
+                        {/* Logout */}
                         <li
                             onClick={handleLogout}
                             className=" font-semibold hover:text-[--text-highlight] cursor-pointer"
@@ -243,32 +261,20 @@ const NavBar = () => {
                         </div>
                     )}
                 </div>
-
-                {/* Overlay when dropdown active, 
-                    created this for close dropdown after clicking anywhere */}
-                {navItem_dropdownShow || profileItem_dropdownShow ? (
-                    <div
-                        className="absolute top-0 left-0 h-full w-full bg-[#34324e20]"
-                        onClick={() => {
-                            setNavItem_dropdownShow(false);
-                            setProfileItem_dropdownShow(false);
-                        }}
-                    ></div>
-                ) : (
-                    ""
-                )}
             </div>
+
+            {/* Overlay when dropdown active, 
+                created this for close dropdown after clicking anywhere */}
+            <div
+                id="fullScreenOverlay"
+                className={navItem_dropdownShow || profileItem_dropdownShow ? `show` : `hide`}
+                onClick={() => {
+                    setNavItem_dropdownShow(false);
+                    setProfileItem_dropdownShow(false);
+                }}
+            ></div>
         </div>
     );
 };
 
 export default NavBar;
-/*
-                        className={
-                            (navItem_dropdownShow || profileItem_dropdownShow)
-                                ? `hiii show opacity-0
-                            absolute top-0 left-0 h-full w-full bg-[black]`
-                                : `hiii hide opacity-95
-                            absolute top-0 left-0 h-full w-full bg-[red]`
-                        }
-*/
