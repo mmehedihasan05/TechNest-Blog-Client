@@ -6,12 +6,13 @@ import { createContext, useContext } from "react";
 import { useState } from "react";
 import useAxiosSecure from "./hooks/useAxiosSecure";
 import { AuthContext } from "./AuthProvider";
+import Loading from "./Components/Loading";
 
 export const OtherContext = createContext();
 
 const Root = () => {
     const axiosSecure = useAxiosSecure();
-    const { currentUser, logout } = useContext(AuthContext);
+    const { currentUser, loading, logout } = useContext(AuthContext);
 
     const [wishlistUpdated, setWishlistUpdated] = useState(true);
     const [updatedWishlistBlogId, setUpdatedWishlistBlogId] = useState(true);
@@ -117,6 +118,10 @@ const Root = () => {
         addWishlist,
         removeWishlist,
     };
+
+    if (loading) {
+        return <Loading />;
+    }
 
     return (
         <div id="appRoot" className="">
