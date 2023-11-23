@@ -145,10 +145,12 @@ const NavBar = () => {
                 </div>
 
                 {/* Dropdown User Info and Dashboard
-                    For Mobile and Tab */}
+                    For Mobile and Tab 
+                    profileItem_dropdownShow && currentUser => eta na dile logout er poreo dropdown theke jay
+                    */}
                 <div
                     className={
-                        profileItem_dropdownShow
+                        profileItem_dropdownShow && currentUser
                             ? `dropdown dropdown_profileItems show
                             bg-white shadow-lg rounded-sm z-10`
                             : `dropdown dropdown_profileItems hide
@@ -265,9 +267,17 @@ const NavBar = () => {
 
             {/* Overlay when dropdown active, 
                 created this for close dropdown after clicking anywhere */}
+            {/* 
+                    (navItem_dropdownShow || profileItem_dropdownShow) && currentUser
+                eta disi karon, dropdown kore logout dileo dekha jay overlay theke gese.
+                */}
             <div
                 id="fullScreenOverlay"
-                className={navItem_dropdownShow || profileItem_dropdownShow ? `show` : `hide`}
+                className={
+                    (navItem_dropdownShow || profileItem_dropdownShow) && currentUser
+                        ? `show`
+                        : `hide`
+                }
                 onClick={() => {
                     setNavItem_dropdownShow(false);
                     setProfileItem_dropdownShow(false);

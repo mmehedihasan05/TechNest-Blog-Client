@@ -29,8 +29,11 @@ import {
     QueryClient,
     QueryClientProvider,
 } from "@tanstack/react-query";
-import Dashboard from "./Pages/Dashboard";
+import Dashboard from "./Pages/Dashboard/Dashboard_Home";
 import Profile from "./Pages/Profile";
+import AllUsers from "./Pages/AllUsers";
+import DashboardRoot from "./Pages/Dashboard/DashboardRoot";
+import { Toaster } from "react-hot-toast";
 
 const queryClient = new QueryClient();
 
@@ -83,10 +86,19 @@ const router = createBrowserRouter([
         ],
     },
     {
-        path: "dashboard",
-        element: <Dashboard />,
+        path: "/dashboard",
+        element: <DashboardRoot />,
         errorElement: <ErrorPage />,
-        children: [],
+        children: [
+            {
+                path: "/dashboard/home",
+                element: <Dashboard />,
+            },
+            {
+                path: "/dashboard/allusers",
+                element: <AllUsers />,
+            },
+        ],
     },
 ]);
 
@@ -96,6 +108,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
             <HelmetProvider>
                 <AuthProvider>
                     <RouterProvider router={router} />
+                    <Toaster position="top-center" reverseOrder={false} />
                 </AuthProvider>
             </HelmetProvider>
         </QueryClientProvider>

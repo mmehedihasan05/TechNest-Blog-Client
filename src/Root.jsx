@@ -1,7 +1,7 @@
 import NavBar from "./Sections/NavBar";
 import { Outlet } from "react-router-dom";
 import Footer from "./Sections/Footer";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { createContext, useContext } from "react";
 import { useState } from "react";
 import useAxiosSecure from "./hooks/useAxiosSecure";
@@ -119,9 +119,9 @@ const Root = () => {
         removeWishlist,
     };
 
-    if (loading) {
-        return <Loading />;
-    }
+    // if (loading) {
+    //     return <Loading />;
+    // }
 
     return (
         <div id="appRoot" className="">
@@ -137,7 +137,6 @@ const Root = () => {
                         <Footer></Footer>
                     </div>
                 </div>
-                <Toaster position="top-center" reverseOrder={false} />
             </OtherContext.Provider>
         </div>
     );

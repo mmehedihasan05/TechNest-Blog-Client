@@ -1,4 +1,8 @@
+/* eslint-disable react-hooks/rules-of-hooks */
+/* eslint-disable no-unreachable */
 /* eslint-disable react-hooks/exhaustive-deps */
+import { useQuery } from "@tanstack/react-query";
+
 import {
     createUserWithEmailAndPassword,
     getAuth,
@@ -16,6 +20,7 @@ import toast from "react-hot-toast";
 import { createContext, useEffect, useState } from "react";
 import { app } from "./Firebase.init";
 import useAxiosSecure from "./hooks/useAxiosSecure";
+import Loading from "./Components/Loading";
 
 export const AuthContext = createContext();
 const googleProvider = new GoogleAuthProvider();
@@ -27,6 +32,7 @@ const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
     const [purchases, setPurchases] = useState([]);
     const [theme, setTheme] = useState(localStorage.getItem("current-theme") || "dark");
+    const [isAdmin, setIsAdmin] = useState(false);
     const axiosSecure = useAxiosSecure();
 
     const auth = getAuth(app);
@@ -51,17 +57,57 @@ const AuthProvider = ({ children }) => {
         }
     }
 
+    function userInfoExtract(userCredential) {
+        return {
+            userInfo: {
+                photoURL: userCredential?.photoURL,
+                displayName: userCredential?.displayName,
+                email: userCredential?.email,
+                emailVerified: userCredential?.emailVerified,
+                creationTime: userCredential?.creationTime,
+                uid: userCredential?.uid,
+                providerId: userCredential?.providerData[0]?.providerId,
+            },
+        };
+    }
+
+    // const {
+    //     data: registerStatus,
+    //     isLoading,
+    //     isError,
+    //     refetch,
+    // } = useQuery({
+    //     queryKey: ["userRegister"],
+    //     queryFn: async (queryKey, variables) => {
+    //         const res = await axiosSecure.post(`/adduser`, variables.userInfo);
+    //         return res.data;
+    //     },
+    //     enabled: false,
+    // });
+
     // Create User || Register Page
     const userCreate = ({ userFullName, userProfileImageUrl, userEmail, userPassword }) => {
         return toast.promise(
             createUserWithEmailAndPassword(auth, userEmail, userPassword)
-                .then((userCredential) => {
+                .then(async (userCredential) => {
                     //
-                    updateProfile(auth.currentUser, {
+                    await updateProfile(auth.currentUser, {
                         displayName: userFullName,
                         photoURL: userProfileImageUrl,
                     });
                     //
+                    console.log("from manual register", userCredential);
+
+                    // user entry
+                    let registerRes = await axiosSecure
+                        .post(`/adduser`, userInfoExtract(userCredential.user))
+                        .then((response) => {
+                            return response.data;
+                        })
+                        .catch((error) => {
+                            console.log("error from userRegister", error);
+                        });
+
                     return userCredential.user;
                 })
                 .catch((error) => {
@@ -80,7 +126,20 @@ const AuthProvider = ({ children }) => {
     const googleLogin = (successMsg) => {
         return toast.promise(
             signInWithPopup(auth, googleProvider)
-                .then((userCredential) => {
+                .then(async (userCredential) => {
+                    // User authenticated
+
+                    let registerRes = await axiosSecure
+                        .post(`/adduser`, userInfoExtract(userCredential.user))
+                        .then((response) => {
+                            return response.data;
+                        })
+                        .catch((error) => {
+                            console.log("error from userRegister", error);
+                        });
+
+                    // registerRes
+
                     return userCredential.user;
                 })
                 .catch((error) => {
@@ -99,7 +158,17 @@ const AuthProvider = ({ children }) => {
     const githubLogin = (successMsg) => {
         return toast.promise(
             signInWithPopup(auth, githubProvider)
-                .then((userCredential) => {
+                .then(async (userCredential) => {
+                    // user entry
+                    let registerRes = await axiosSecure
+                        .post(`/adduser`, userInfoExtract(userCredential.user))
+                        .then((response) => {
+                            return response.data;
+                        })
+                        .catch((error) => {
+                            console.log("error from userRegister", error);
+                        });
+
                     return userCredential.user;
                 })
                 .catch((error) => {
@@ -158,28 +227,40 @@ const AuthProvider = ({ children }) => {
 
     useEffect(() => {
         const unSubscribe = onAuthStateChanged(auth, (user) => {
-            setLoading(false);
-            setCurrentUser(user);
-
             const email = user?.email;
             const userId = user?.uid;
 
             console.log(user);
             if (email) {
-                console.log("Logged in condition", { email, userId });
-
+                // Setting cookies and checking cookies
                 axiosSecure
                     .post(`/authenticate`, { email, userId })
-                    .then((response) => console.log("JWT || Authentication Success", response))
+                    .then((response) => {
+                        console.log("JWT || Authentication Success", response);
+
+                        // admin role checking
+                        axiosSecure
+                            .get(`/role-check?email=${email}&userId=${userId}`)
+                            .then((res) => {
+                                console.log("res from admin chk", res.data);
+                                setIsAdmin(res.data.isAdmin);
+                                setCurrentUser(user);
+                                setLoading(false);
+                            })
+                            .catch((err) =>
+                                console.log("error from authprovider/admin role check")
+                            );
+                    })
                     .catch((jwt_Error) => {
-                        // Logout
-                        // console.log(jwt_Error);
                         console.log(
                             "JWT || Authentication Failed",
                             jwt_Error.response.data,
                             jwt_Error.response.status
                         );
                     });
+            } else {
+                setCurrentUser(user);
+                setLoading(false);
             }
         });
 
@@ -203,7 +284,13 @@ const AuthProvider = ({ children }) => {
         loading,
         theme,
         setTheme,
+
+        isAdmin,
     };
+
+    if (loading) {
+        return <Loading />;
+    }
 
     return (
         <>

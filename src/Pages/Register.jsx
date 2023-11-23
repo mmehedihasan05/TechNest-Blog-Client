@@ -18,7 +18,6 @@ import { TfiReload } from "react-icons/tfi";
 
 const Register = () => {
     const [showPassword, setShowPassword] = useState(false);
-    const [error, setError] = useState(null);
 
     const { userCreate, currentUser } = useContext(AuthContext);
 
@@ -36,13 +35,6 @@ const Register = () => {
 
     const handleUserCreate_emailPass = (e) => {
         e.preventDefault();
-        setError("");
-
-        if (!validateCaptcha(e.target.captcha.value)) {
-            toast.error("Captcha is not matched!");
-            setError("Captcha is not matched!");
-            return "";
-        }
 
         // Getting data from Form
         let data = {
@@ -52,36 +44,43 @@ const Register = () => {
             userPassword: e.target.password?.value,
         };
 
-        // Validation
-        const uppercaseRegex = /^(?=.*[A-Z]).+$/;
-        var specialCharRegex = /[!@#$%^&*()_+\-=\[\]{};'`:"\\|,.<>\/?~]+/;
-        const numericCharRegex = /^(?=.*\d).+$/;
+        // captcha and password validation
+        function validation(data, validate) {
+            const uppercaseRegex = /^(?=.*[A-Z]).+$/;
+            var specialCharRegex = /[!@#$%^&*()_+\-=\[\]{};'`:"\\|,.<>\/?~]+/;
+            const numericCharRegex = /^(?=.*\d).+$/;
 
-        if (data.userPassword.length < 6) {
-            toast.error("Password should be equal or more than 6 characters");
-            setError("Password should be equal or more than 6 characters");
-            return "";
-        } else if (!uppercaseRegex.test(data.userPassword)) {
-            toast.error("Password must contain an uppercase character");
+            if (!validate) return { success: true, msg: "" };
 
-            setError("Password must contain an uppercase character");
-            return;
-        } else if (!specialCharRegex.test(data.userPassword)) {
-            toast.error("Password must contain a special character");
+            if (!validateCaptcha(e.target.captcha.value)) {
+                return "Captcha is not matched!";
+            } else if (data.userPassword.length < 6) {
+                return {
+                    success: false,
+                    msg: "Password should be equal or more than 6 characters",
+                };
+            } else if (!uppercaseRegex.test(data.userPassword)) {
+                return { success: false, msg: "Password must contain an uppercase character" };
+            } else if (!specialCharRegex.test(data.userPassword)) {
+                return { success: false, msg: "Password must contain a special character" };
+            } else if (!numericCharRegex.test(data.userPassword)) {
+                return { success: false, msg: "Password must contain a numeric character" };
+            } else {
+                return { success: true, msg: "" };
+            }
+        }
 
-            setError("Password must contain a special character");
-            return;
-        } else if (!numericCharRegex.test(data.userPassword)) {
-            toast.error("Password must contain a numeric character");
+        let response = validation(data);
 
-            setError("Password must contain a numeric character");
-        } else {
+        if (response.success) {
             userCreate(data)
                 .then((response) => {
                     // Reset form after successfull login
                     e.target.reset();
                 })
                 .catch((error) => {});
+        } else {
+            toast.error(response.msg);
         }
     };
 

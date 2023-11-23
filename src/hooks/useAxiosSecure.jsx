@@ -12,7 +12,7 @@ const useAxiosSecure = () => {
     const all = useContext(AuthContext);
 
     let axiosSecure = axios.create({
-        baseURL: "https://technest-blog-backend.vercel.app",
+        baseURL: "http://localhost:5000",
         withCredentials: true,
     });
 
@@ -22,7 +22,7 @@ const useAxiosSecure = () => {
                 return response;
             },
             (error) => {
-                if (error.response.status === 401) {
+                if (error.response.status === 401 || error.response.status === 403) {
                     console.log("Called from secure", all?.currentUser);
                     all?.logout()
                         .then((response) => {
@@ -36,6 +36,7 @@ const useAxiosSecure = () => {
                 return Promise.reject(error);
             }
         );
+
         // Cleanup function to remove the interceptor when the component unmounts
         return () => {
             axiosSecure.interceptors.response.eject(interceptor);
@@ -53,8 +54,29 @@ const axiosSecure = axios.create({
 });
 
 const useAxiosSecureNew = () => {
-    console.log("me");
+    const authContexts = useContext(AuthContext);
+
+    axiosSecure.interceptors.response.use(
+        (response) => {
+            return response;
+        },
+        async (error) => {
+            if (error.response.status === 401) {
+                authContexts
+                    ?.logout()
+                    .then((response) => {
+                        toast.error("Unauthorized Access! Logged Out.");
+                    })
+                    .catch((error) => {
+                        toast.error("Unauthorized Access!");
+                    });
+            }
+
+            return Promise.reject(error);
+        }
+    );
+
     return axiosSecure;
 };
 
-export default useAxiosSecureNew;
+export default useAxiosSecure;
