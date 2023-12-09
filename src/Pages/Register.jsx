@@ -145,15 +145,6 @@ const Register = () => {
                                     required
                                 />
 
-                                {/* Image Link */}
-                                <input
-                                    type="text"
-                                    placeholder="Profile Image URL"
-                                    name="profile_image_url"
-                                    className="_input"
-                                    required
-                                />
-
                                 {/* Email */}
                                 <input
                                     type="email"
@@ -183,6 +174,17 @@ const Register = () => {
                                             ></AiFillEyeInvisible>
                                         )}
                                     </div>
+                                </div>
+
+                                {/* Image upload option */}
+                                <div>
+                                    <div>Upload your image</div>
+                                    <input
+                                        type="file"
+                                        name="profile_image_url"
+                                        className="file-input file-input-bordered w-full max-w-xs"
+                                        required
+                                    />
                                 </div>
 
                                 {/* Captcha */}

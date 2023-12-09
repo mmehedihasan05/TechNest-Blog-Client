@@ -29,11 +29,13 @@ import {
     QueryClient,
     QueryClientProvider,
 } from "@tanstack/react-query";
-import Dashboard from "./Pages/Dashboard/Dashboard_Home";
 import Profile from "./Pages/Profile";
 import AllUsers from "./Pages/AllUsers";
 import DashboardRoot from "./Pages/Dashboard/DashboardRoot";
 import { Toaster } from "react-hot-toast";
+import Membership from "./Pages/Membership";
+import PaymentHistory from "./Pages/Payment/PaymentHistory";
+import Dashboard_Home from "./Pages/Dashboard/Dashboard_Home";
 
 const queryClient = new QueryClient();
 
@@ -78,6 +80,22 @@ const router = createBrowserRouter([
                     </PrivateRoute>
                 ),
             },
+            {
+                path: "/membership",
+                element: (
+                    <PrivateRoute>
+                        <Membership />
+                    </PrivateRoute>
+                ),
+            },
+            {
+                path: "/payment-history",
+                element: (
+                    <PrivateRoute>
+                        <PaymentHistory />
+                    </PrivateRoute>
+                ),
+            },
             { path: "/login", element: <Login /> },
             { path: "/register", element: <Register /> },
             { path: "/authentications", element: <Authentications /> },
@@ -86,13 +104,13 @@ const router = createBrowserRouter([
         ],
     },
     {
-        path: "/dashboard",
+        path: "/dashboard/",
         element: <DashboardRoot />,
         errorElement: <ErrorPage />,
         children: [
             {
-                path: "/dashboard/home",
-                element: <Dashboard />,
+                path: "/dashboard/",
+                element: <Dashboard_Home />,
             },
             {
                 path: "/dashboard/allusers",

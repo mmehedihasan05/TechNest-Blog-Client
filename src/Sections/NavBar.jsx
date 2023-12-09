@@ -37,10 +37,11 @@ const NavBar = () => {
     // const route_common = [];
     const route_admin = [
         { path: "/profile", name: "Profile" },
-        { path: "/dashboard", name: "Dashboard" },
+        { path: "/dashboard/", name: "Dashboard" },
         { path: "/myBlogs", name: "My Blogs" },
         { path: "/settings", name: "Settings" },
-        { path: "/membership", name: "Become a Member" },
+        { path: "/membership", name: "Membership" },
+        { path: "/payment-history", name: "Payment History" },
     ];
     const route_normalUser = [
         { path: "/profile", name: "Profile" },

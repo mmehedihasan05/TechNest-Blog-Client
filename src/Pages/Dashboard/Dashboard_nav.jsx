@@ -37,7 +37,7 @@ const Dashboard_nav = () => {
                                             ? ` text-[--text-highlight] hover:text-[--text-highlight] border-b-2 border-[--text-highlight] hover:bg-transparent font-semibold`
                                             : ` hover:text-[--text-highlight] hover:bg-transparent font-semibold`
                                     }
-                                    to="/dashboard/home"
+                                    to="/dashboard/"
                                 >
                                     Dashboard
                                 </NavLink>

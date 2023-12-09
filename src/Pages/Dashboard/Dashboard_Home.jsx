@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 
-const Dashboard = () => {
+const Dashboard_Home = () => {
     return <div>Features will add later</div>;
 };
 
-export default Dashboard;
+export default Dashboard_Home;
