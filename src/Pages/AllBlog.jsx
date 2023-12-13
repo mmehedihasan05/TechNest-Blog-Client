@@ -22,6 +22,7 @@ const AllBlog = () => {
         { title: "Latest to Earliest", value: "descending" },
     ];
     const [blogData, setBlogData] = useState([]);
+    const [allBlogData, setAllBlogData] = useState({});
     const { currentUser } = useContext(AuthContext);
     const { updatedWishlistBlogId } = useContext(OtherContext);
     const axiosSecure = useAxiosSecure();
@@ -32,25 +33,31 @@ const AllBlog = () => {
         `/allblogs?email=${currentUser?.email}&userId=${currentUser?.uid}`
     );
 
-    const { data: blogsData, isLoading } = useQuery({
+    const { data, isLoading } = useQuery({
         queryKey: ["allblogs", currentUser?.uid, searchUrl],
         queryFn: async () => {
             const res = await axiosSecure.get(searchUrl);
+            console.log("all blogs", res.data);
+            setAllBlogData(res.data);
             return res.data;
         },
     });
 
+    console.log("Outside ", allBlogData, allBlogData?.allBlogs);
+
     // When updatedWishlistBlogId changes, it reverse the wishlist status of that blog
     useEffect(() => {
-        let tempBlogData = blogData.map((data) => {
-            if (data._id === updatedWishlistBlogId) {
-                data.wishlist = !data.wishlist;
-            }
+        if (allBlogData?.allBlogs) {
+            let tempBlogData = allBlogData.allBlogs.map((data) => {
+                if (data._id === updatedWishlistBlogId) {
+                    data.wishlist = !data.wishlist;
+                }
 
-            return data;
-        });
+                return data;
+            });
 
-        setBlogData(tempBlogData);
+            setBlogData({ searchedBlogs: allBlogData?.searchedBlogs, tempBlogData }, tempBlogData);
+        }
     }, [updatedWishlistBlogId]);
 
     // Fetching categories
@@ -74,6 +81,7 @@ const AllBlog = () => {
         let searchQueries = `&sort_Date=${sort_Date}`;
 
         searchTitle && (searchQueries += `&searchTitle=${searchTitle}`);
+        console.log("selectedCategories", selectedCategories);
         selectedCategories.length !== 0 && (searchQueries += `&categories=${selectedCategories}`);
 
         setSearchUrl(
@@ -112,8 +120,8 @@ const AllBlog = () => {
                         <h3 className="font-semibold text-lg space-x-2">
                             <span>Blogs</span>
                             <span className="text-xs opacity-80">
-                                {blogsData?.allBlogs &&
-                                    `(${blogsData?.allBlogs.length} blogs found)`}
+                                {allBlogData?.allBlogs &&
+                                    `(${allBlogData?.allBlogs.length} blogs found)`}
                             </span>
                         </h3>
                     </div>
@@ -148,13 +156,13 @@ const AllBlog = () => {
 
                 {/* All blogs */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {blogsData?.allBlogs
-                        ? blogsData.allBlogs.map((blogData, idx) => (
+                    {allBlogData?.allBlogs
+                        ? allBlogData.allBlogs.map((blogData, idx) => (
                               <BlogCard key={idx} blogData={blogData}></BlogCard>
                           ))
                         : ""}
 
-                    {blogsData?.searchedBlogs && blogsData?.allBlogs.length === 0 ? (
+                    {allBlogData?.searchedBlogs && allBlogData?.allBlogs.length === 0 ? (
                         <h3 className="font-semibold text-base text-center">
                             No blog found by this search!
                         </h3>

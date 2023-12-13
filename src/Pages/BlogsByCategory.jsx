@@ -8,6 +8,7 @@ import BlogCard from "../Components/BlogCard";
 import SkeletorForCard from "../Components/SkeletorForCard";
 import { OtherContext } from "../Root";
 import { Helmet } from "react-helmet-async";
+import { AuthContext } from "../AuthProvider";
 
 const BlogsByCategory = () => {
     const axiosSecure = useAxiosSecure();
@@ -15,12 +16,17 @@ const BlogsByCategory = () => {
     const [blogData, setBlogData] = useState([]);
     const [loading, setLoading] = useState(true);
     const { wishlistUpdated } = useContext(OtherContext);
+    const { currentUser } = useContext(AuthContext);
+    // let selectedCategories = values.selectedCategories.map((categories) => categories.value);
 
     useEffect(() => {
+        console.log("categoryname", categoryname);
         axiosSecure
-            .get(`/filterblogs?category=${categoryname}`)
+            .get(
+                `/allblogs?email=${currentUser?.email}&userId=${currentUser?.uid}&categories=${categoryname}`
+            )
             .then((data) => {
-                setBlogData(data.data);
+                setBlogData(data.data.allBlogs);
                 setLoading(false);
             })
             .catch((error) => console.log(error));
